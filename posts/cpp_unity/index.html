@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+         
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>C&#43;&#43;, C# and Unity</title>
+        
+        <style>
+
+    html body {
+        font-family: 'Raleway', sans-serif;
+        background-color: white;
+    }
+
+    :root {
+        --accent: red;
+        --border-width:  5px ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://lucasmeijer.com/css/main.css">
+
+
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/solarized-dark.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+ 
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/swift.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/c#.min.js"></script> 
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+ <meta name="generator" content="Hugo 0.53" />
+        
+
+        
+    </head>
+
+    
+    
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <body>
+         
+        <nav class="navbar navbar-default navbar-fixed-top">
+
+            <div class="container">
+
+                <div class="navbar-header">
+
+                    <a class="navbar-brand visible-xs" href="#">C&#43;&#43;, C# and Unity</a>
+
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                </div>
+
+                <div class="collapse navbar-collapse">
+
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="/">Home</a></li>
+                            
+                                <li><a href="/posts/">Posts</a></li>
+                            
+                        </ul>
+                    
+
+                    
+                        <ul class="nav navbar-nav navbar-right">
+                            
+                                <li class="navbar-icon"><a href="mailto:lucas@lucasmeijer.com"><i class="fa fa-envelope-o"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://twitter.com/lucasmeijer/"><i class="fa fa-twitter"></i></a></li>
+                            
+                        </ul>
+                    
+
+                </div>
+
+            </div>
+
+        </nav>
+
+
+<main>
+
+    <div class="item">
+
+    
+    
+    
+
+    
+    
+
+    <h4><a href="/posts/cpp_unity/">C&#43;&#43;, C# and Unity</a></h4>
+    <h5>January 3, 2019</h5>
+    
+
+</div>
+
+
+    <br> <div class="text-justify">
+
+<p>A lot has been <a href="https://youtu.be/rX0ItVEVjHc">said</a> and <a href="https://aras-p.info/blog/2018/12/28/Modern-C-Lamentations/">written</a>  lately about the game industry&rsquo;s &ldquo;C++ is not changing into the thing we need&rdquo; feelings. Valid criticism on various things that make C++ not a great language for games (or at all), and <a href="https://medium.com/@pat_wilson/get-your-shit-together-6ccbfd6bb755">valid counter criticism</a> of &ldquo;well why dont you guys participate in the open-for-everyone process of designing C++ instead of bitching from the sidelines&rdquo;.</p>
+
+<p>Let&rsquo;s talk about the place C++ will have at Unity:</p>
+
+<p>Unity and advanced game programmers&rsquo; problem at the end of the day is that they need to provide an executable with instructions the target processor can understand, that when executed will run the game.</p>
+
+<p>For the performance cricital part of our code, we know what we want the final instructions to be. We just want an easy way to describe our logic in a reasonable way, and then trust and verify that the generated instructions are the ones we want.</p>
+
+<p>C++ is not great at this task. I want my loop to be vectorized, but a million things can happen that might make the compiler not vectorize it. It might be vectorized today, but not tomorrow if a new seemingly innocent change happens.
+Just convincing all my C/C++ compilers to vectorize my code at all is hard.</p>
+
+<p>We took a step back and figured: wow it&rsquo;s kind of crazy the only popular way to generate machine instructions somewhat comfortably is C/C++. (There&rsquo;s Go and Rust these days too, which is great, this space can use some competition).</p>
+
+<p>We decided to make our own &ldquo;reasonably comfortable way to generate machine code&rdquo;, that checks all the boxes that we care about. We could spend a lot of energy trying to bend the C++ design train a little bit more in a direction it would work a little bit better for us, but we&rsquo;d much rather spend that energy on a toolchain where we can do all of the design, and that we design exactly for the problem that game developers have.</p>
+
+<p>What checkboxes do we care about?</p>
+
+<ul>
+<li><p><strong>Performance is correctness</strong>. I should be able to say &ldquo;if this loop for some reason doesn&rsquo;t vectorize, that should be a compiler error, not a &lsquo;oh code is now just 8x slower but it still produces correct values, no biggy!&rsquo;&rdquo;</p></li>
+
+<li><p>Cross-architecture. The input code I write should not have to be different for when I target iOS than when I target Xbox. (this sounds like a no brainer, but after pulling your hair out getting a C++ compiler to reliably generate the instructions you want, it&rsquo;s very common to just tableflip, and write the instructions you want in assembler and be done with it)</p></li>
+
+<li><p>We should have a nice iteration loop where I can easily see the machine code that is generated for all architectures as I change my code. The machine code &ldquo;viewer&rdquo; should do a good job at teaching/explaining what all these machine instructions do.</p></li>
+
+<li><p>Safety. most game developers don&rsquo;t have safety very high on their priority list, but we think that the fact that it&rsquo;s really hard to have memory corruption in Unity has been one of its killer features. There should be a mode in which we can run this code that will give us a clear error with a great error message if I read/write out of bounds or dereference null</p></li>
+</ul>
+
+<p>Ok, so now we know what things we care about, next step we need to decide on what the input language for this machinecode generator is. What options do we have:</p>
+
+<ul>
+<li>Custom language</li>
+<li>Some adaption/subset of C or C++</li>
+<li>Subset of C#</li>
+</ul>
+
+<p>Say what C#? For our most performance critical inner loops?</p>
+
+<p>Yes. C# is a very natural choice that comes with a lot of nice benefits for Unity:</p>
+
+<ul>
+<li>It&rsquo;s the language our users already use today</li>
+<li>Has <a href="https://www.jetbrains.com/rider">great</a> IDE <a href="https://visualstudio.microsoft.com/">tooling</a> (both editing/refactoring as well as debugging) that C++ programmers often have no idea even was possible. (should do a follow up post on this one day)</li>
+<li>A C#-&gt;intermediate IL compiler already exists (the <a href="https://github.com/dotnet/roslyn">Roslyn</a> C# compiler from microsoft), and we can just use it instead of having to write our own.</li>
+<li>We have a lot of experience <a href="https://github.com/jbevain/cecil">modifying intermediate-IL</a>, so it&rsquo;s easy to do codegen and postprocessing on the actual program</li>
+</ul>
+
+<p>I quite enjoy writing code in C# myself. However, traditional C# as a whole is not an amazing language when it comes to performance. While the C# language team, standard library team, and runtime team have been making great progress in the last two years, we&rsquo;re still looking at a language where you have no control over where/how your data is laid out in memory, while that is exactly what we need.</p>
+
+<p>On top of that the standard library is oriented around &ldquo;objects on the heap&rdquo;, and &ldquo;objects having pointer references to other objects&rdquo;.</p>
+
+<p>That said, if we give up on the most of the standard library, (bye Linq, StringFormatter, List, Dictionary), disallow allocations (=no classes, only structs), no garbage collector, dissalow virtual calls and non-constrained interface invocations, and add a few new containers that you are allowed to use (NativeArray and friends) the remaining pieces of the C# language are looking really good. Remember this is only for your performance critical code. Here&rsquo;s an example from our <a href="https://www.youtube.com/watch?v=j4rWfPyf-hk">mega city demo</a>:</p>
+
+<script type="application/javascript" src="//gist.github.com/lucasmeijer/bb5ba6a73340566e9b7273a541d191de.js"></script>
+
+<p>This subset lets us comfortably do everything we need in our hot loops. Because it&rsquo;s a valid subset of C#, we can also run it as regular C# getting errors on out of bounds access, great error messages, debugger support and compilation speeds you forgot were possible when working in C++. We often refer to this subset as HighPerformanceC#, HPC#</p>
+
+<h2 id="where-are-we-today">Where are we today?</h2>
+
+<p>We&rsquo;ve built this code generator / compiler, and it&rsquo;s called Burst. It ships with Unity2018.3. We have a lot of work ahead, but we&rsquo;re already happy with it today.</p>
+
+<p>We&rsquo;re sometimes faster than C++, also still sometimes slower than C++. The latter case we consider performance bugs we&rsquo;re confident we can resolve.</p>
+
+<p>Only comparing performance is not enough though. What matters equally is what you had to do to get that performance. Example: we took the c++ culling code of our current c++ renderer and ported it to Burst. Performance was the same, but the C++ version had to do incredible gymnastics to convince our c++ compilers to actually vectorize. The Burst version was about 4x smaller.</p>
+
+<p>To be honest, the whole &ldquo;you should move your most performance critical code to C#&rdquo; story also didn&rsquo;t result in everybody internally at Unity immediately buying it. For most of us it feels like &ldquo;you&rsquo;re closer to the metal&rdquo; when you use C++. But that won&rsquo;t be true for much longer. When we use C# we have complete control over the entire process from source compilation down to machine code generation, and if there&rsquo;s something we don&rsquo;t like, we just go in and fix it. No comittee to convince of the value of our usecase, or other concerns to be balanced against.</p>
+
+<p>We will slowly but surely port every piece of performance critical code that we have in C++ to HPC#. It&rsquo;s easier to get the performance we want, harder to write bugs, and easier to work with.</p>
+
+<p>Here&rsquo;s a screenshot of Burst Inspector, allowing you to easily see what assembly instructions were generated for your different burst hotloops:</p>
+
+<p><a href="../../images/burst-inspector.png"><img src="../../images/burst-inspector.png"/></a></p>
+
+<p>Unity has a lot of different users. Some can enumerate the entire arm64 instruction set from memory, others are happy to create things without getting a PhD in computer science.</p>
+
+<p>Both examples of users benefit as the parts of their frametime that is spent running engine code (usually 90%+) get faster. The parts that are running asset store package runtime code gets faster as asset store package authors adopt HPC#.</p>
+
+<p>Advanced users will benefit ontop of that by being able to also write their own high performance code in HPC#.</p>
+
+<h2 id="optimization-granularity">Optimization Granularity</h2>
+
+<p>In a typical C++ project setup, it is very hard to ask the compiler to make different optimization tradeoffs for different parts of your program. The best you have is per file granularity on specifying optimization level. This maps poorly to what we want. I have a function that is a hot loop, and I want that hot loop <em>and everything it calls</em> to be as optimized as possible. &ldquo;everything it calls&rdquo; will be spread out over many different files.</p>
+
+<p>Burst is designed to take as input not your entire program, but a single method in that program: the entrypoint to a hot loop. It will compile that function and everything that it invokes (which is guaranteed to be known: we don&rsquo;t allow virtual functions or function pointers).</p>
+
+<p>Because Burst only operates on a relatively small part of the program, we set optimization level to 11. Burst inlines pretty much every callsite, making it possible to remove if checks that otherwise would not be removed (because in inlined form we have more information about the arguments of the function).</p>
+
+<h2 id="help-with-common-multi-threading-problems">Help with common multi threading problems</h2>
+
+<p>C++ (nor C#) doesn&rsquo;t do much to help developers to write thread safe code.</p>
+
+<p>Even today, more than a decade since game consumer hardware has &gt;1 core, it is very hard to write programs that use multiple core&rsquo;s effectively.</p>
+
+<p>Data races, nondeterminism and deadlocks are all challenges that make shipping multi threading code difficult. What we want is features like &ldquo;make sure that this function and everything that it calls never read or write global state&rdquo;. We want violations of that rule to be compiler errors, not &ldquo;guidelines we hope all programmers adhere to&rdquo;. Burst gives a compiler error.</p>
+
+<p>We encourage users (and ourselves) to write &ldquo;jobified&rdquo; code: splitting up all
+data transformations that need to happen in jobs. Each job is &ldquo;functional&rdquo;, as in side-effect free. It explicitely specifies its readonly buffers and read/write buffers it operates on. Any other attempt to access other data results in a compiler error.</p>
+
+<p>The job scheduler will guarantee that nobody is writing to your readonly buffer while your job is running. And we&rsquo;ll guarantee that nobody is reading from your read/write buffer while your job is running.</p>
+
+<p>If you schedule a job that violates these rules, you get a runtime error <em>every time</em>. Not just in your unlucky race condition case. The error message will explain that you&rsquo;re trying to schedule a job that wants to read from buffer A, but that you already scheduled a job before that will write to A, so if you want to do this, you need to specify that previous job as a dependency.</p>
+
+<p>We find this safety mechanism catches a <em>lot</em> of bugs before they get committed and results in efficient use of all cores. It becomes impossible to code a deadlock or a race condition. Results are guaranteed to be deterministic regardless of how many threads are running, or how many time a thread gets interrupted by some other process.</p>
+
+<h2 id="hacking-the-whole-stack">Hacking the whole stack</h2>
+
+<p>By being able to hack on all these components we get benefits by making them be aware of eachother. For example, a common case for a vectorization not happening, is that the compiler cannot guarantee that two pointers do not point to the same memory (aliasing). We know two NativeArray&rsquo;s will never alias, because we wrote the collection library, and we can use that knowledge in Burst, so it won&rsquo;t have to give up on an optimization because it&rsquo;s afraid two array pointers might point to the same memory.</p>
+
+<p>Similarly, we wrote the <a href="https://github.com/Unity-Technologies/Unity.Mathematics">Unity.Mathemetics</a> math library. Burst has intimite knowledge of it. It will (in the future) be able to do accuracy sacrificing optimizations for things like math.sin(). Because to Burst math.sin() is not just any C# method to compile, it will understand the trigonometric properties of sin(), understand that sin(x) == x for small values of x (which Burst might be able to prove), understand it can be replaced by a taylor series expansion for a certain accuracy sacrifice.</p>
+
+<h2 id="distinction-between-engine-code-and-game-code-dissapears">Distinction between engine code and game code dissapears</h2>
+
+<p>By writing Unity&rsquo;s runtime code in HPC#, the engine and the game are written
+in the same language. Runtime systems that we have converted to HPC#, we will distribute as source. Everyone will be able to learn from them, improve them, tailor them. We&rsquo;ll have a level playing field, where nothing is stopping users from writing a better particle system / physics system / renderer than we write.
+I expect many people will (<a href="https://forum.unity.com/threads/sources-available-physics-in-pure-ecs.531716/">here&rsquo;s a user writing a physics engine</a> completely in user code, before we ship a HPC# physics engine). By having our internal development process be much more like our users development process, we&rsquo;ll also feel our users pain more directly, and we can focus all our efforts into improving a single workflow, instead of two different ones.</p>
+
+<h2 id="join-us">Join us</h2>
+
+<p>Many game industry veterans (and non veterans) are unhappy with the status quo and decided to join us to make all the tech from this post a reality. (Hi
+<a href="https://www.twitter.com/postgoodism">@postgoodism</a>,
+<a href="https://www.twitter.com/xoofx">@xoofx</a>,
+<a href="https://www.twitter.com/deplinenoise">@deplinenoise</a>,
+<a href="https://www.twitter.com/icetigris">@icetigris</a>,
+<a href="https://www.twitter.com/vvuk">@vvuk</a>,
+<a href="https://www.twitter.com/macton">@macton</a>,
+<a href="https://www.twitter.com/vengefularia">@vengefularia</a>,
+<a href="https://www.twitter.com/bmcnett">@bmcnett</a>). If changing the status quo in langauge tools for game development is something you would also love to work on, we&rsquo;d love to hear from you. Ping me <a href="https://www.twitter.com/lucasmeijer">@lucasmeijer</a> or Mike Acton <a href="https://www.twitter.com/macton">@macton</a> if you&rsquo;re interested.</p>
+
+<p>The future isn&rsquo;t going to build itself.</p>
+
+<p>There are no comments on this website, but you can say hi on twitter <a href="https://www.twitter.com/lucasmeijer">@lucasmeijer</a></p>
+
+<p>Footnotes:</p>
+
+<ul>
+<li><a href="https://www.twitter.com/Jonathan_Blow">Jonathan Blow</a> is working on an interesting language + compiler called Jai, sharing some motivation with unity: if I&rsquo;m going to spend another 20 years making games, let&rsquo;s make sure we do it with tools I love using.</li>
+</ul>
+</div>
+
+    
+    
+
+    
+
+    
+
+</main>
+
+        <footer>
+
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a></p>
+
+        </footer>
+       
+    </body>
+
+</html>
+
