@@ -6,19 +6,18 @@
     <description>Recent content in Posts on Lucas&#39; website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 28 Dec 2018 17:22:10 +0300</lastBuildDate>
+    <lastBuildDate>Thu, 03 Jan 2019 01:33:37 +0100</lastBuildDate>
     
 	<atom:link href="https://lucasmeijer.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Games, C&#43;&#43; and Unity</title>
-      <link>https://lucasmeijer.github.io/posts/cpp/</link>
-      <pubDate>Fri, 28 Dec 2018 17:22:10 +0300</pubDate>
+      <title>Test Post</title>
+      <link>https://lucasmeijer.github.io/posts/test-post/</link>
+      <pubDate>Thu, 03 Jan 2019 01:33:37 +0100</pubDate>
       
-      <guid>https://lucasmeijer.github.io/posts/cpp/</guid>
-      <description>A lot has been said and written lately about the game industry&amp;rsquo;s &amp;ldquo;C++ is not changing into the thing we need&amp;rdquo; feelings. Valid criticism on various things that make C++ not a great language for games (or at all), and valid counter criticism of &amp;ldquo;well why dont you guys participate in the open-for-everyone process of designing C++ instead of bitching from the sidelines&amp;rdquo;.
-Let&amp;rsquo;s talk about the place C++ will have at Unity in the future:</description>
+      <guid>https://lucasmeijer.github.io/posts/test-post/</guid>
+      <description>This is a test post!</description>
     </item>
     
   </channel>
