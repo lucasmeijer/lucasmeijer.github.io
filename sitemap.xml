@@ -3,29 +3,29 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://lucasmeijer.github.io.com/posts/cpp/</loc>
+    <loc>https://lucasmeijer.github.io/posts/cpp/</loc>
     <lastmod>2018-12-28T17:22:10+03:00</lastmod>
   </url>
   
   <url>
-    <loc>http://lucasmeijer.github.io.com/categories/</loc>
+    <loc>https://lucasmeijer.github.io/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://lucasmeijer.github.io.com/</loc>
-    <lastmod>2018-12-28T17:22:10+03:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://lucasmeijer.github.io.com/posts/</loc>
+    <loc>https://lucasmeijer.github.io/</loc>
     <lastmod>2018-12-28T17:22:10+03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://lucasmeijer.github.io.com/tags/</loc>
+    <loc>https://lucasmeijer.github.io/posts/</loc>
+    <lastmod>2018-12-28T17:22:10+03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://lucasmeijer.github.io/tags/</loc>
     <priority>0</priority>
   </url>
   
