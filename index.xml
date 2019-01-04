@@ -28,8 +28,8 @@ I like to refer to this level of our stack as the &amp;ldquo;game engine engine&
       <pubDate>Thu, 03 Jan 2019 01:33:37 +0100</pubDate>
       
       <guid>https://lucasmeijer.com/posts/cpp_unity/</guid>
-      <description>A lot has been said and written lately about the game industry&amp;rsquo;s &amp;ldquo;C++ is not changing into the thing we need&amp;rdquo; feelings. Valid criticism on various things that make C++ not a great language for games (or at all), and valid counter criticism of &amp;ldquo;well why dont you guys participate in the open-for-everyone process of designing C++ instead of bitching from the sidelines&amp;rdquo;.
-Let&amp;rsquo;s talk about the place C++ will have at Unity:</description>
+      <description>Updated post: fixed mike&amp;rsquo;s twitter handle, replaced example of traffic system with example of path tracer
+A lot has been said and written lately about the game industry&amp;rsquo;s &amp;ldquo;C++ is not changing into the thing we need&amp;rdquo; feelings. Valid criticism on various things that make C++ not a great language for games (or at all), and valid counter criticism of &amp;ldquo;well why dont you guys participate in the open-for-everyone process of designing C++ instead of bitching from the sidelines&amp;rdquo;.</description>
     </item>
     
   </channel>
