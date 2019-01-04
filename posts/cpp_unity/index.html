@@ -191,7 +191,7 @@ Just convincing all my C/C++ compilers to vectorize my code at all is hard.</p>
 
 <p>On top of that the standard library is oriented around &ldquo;objects on the heap&rdquo;, and &ldquo;objects having pointer references to other objects&rdquo;.</p>
 
-<p>That said, if we give up on the most of the standard library, (bye Linq, StringFormatter, List, Dictionary), disallow allocations (=no classes, only structs), no garbage collector, dissalow virtual calls and non-constrained interface invocations, and add a few new containers that you are allowed to use (NativeArray and friends) the remaining pieces of the C# language are looking really good. Remember this is only for your performance critical code. Here&rsquo;s an example from our <a href="https://github.com/aras-p/ToyPathTracer">aras path tracer toy project</a>:</p>
+<p>That said, if we give up on the most of the standard library, (bye Linq, StringFormatter, List, Dictionary), disallow allocations (=no classes, only structs), no garbage collector, dissalow virtual calls and non-constrained interface invocations, and add a few new containers that you are allowed to use (NativeArray and friends) the remaining pieces of the C# language are looking really good. Remember this is only for your performance critical code. Here&rsquo;s an example from <a href="https://github.com/aras-p/ToyPathTracer">aras path tracer toy project</a>:</p>
 
 <script type="application/javascript" src="//gist.github.com/lucasmeijer/9239a3e7e24c56eae83b1ef906048a1e.js"></script>
 
