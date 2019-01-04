@@ -6,10 +6,21 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 03 Jan 2019 01:33:37 +0100</lastBuildDate>
+    <lastBuildDate>Fri, 04 Jan 2019 03:34:28 +0100</lastBuildDate>
     
 	<atom:link href="https://lucasmeijer.com/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Whats next after Burst</title>
+      <link>https://lucasmeijer.com/posts/whats_next_after_burst/</link>
+      <pubDate>Fri, 04 Jan 2019 03:34:28 +0100</pubDate>
+      
+      <guid>https://lucasmeijer.com/posts/whats_next_after_burst/</guid>
+      <description>In my previous post I talked about a few fundementals of Unity&amp;rsquo;s Data Oriented Tech Stack (DOTS) future:
+ HPC# and Burst compiler Job system  At this point in our tech stack, we can generate some really fast code, we can run jobs safely and efficiently.
+I like to refer to this level of our stack as the &amp;ldquo;game engine engine&amp;rdquo;. Anyone can use this stack to write a game engine.</description>
+    </item>
     
     <item>
       <title>C&#43;&#43;, C# and Unity</title>
