@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+         
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>There&#39;s no such thing as an API break</title>
+        
+        <style>
+
+    html body {
+        font-family: 'Raleway', sans-serif;
+        background-color: white;
+    }
+
+    :root {
+        --accent: red;
+        --border-width:  5px ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://lucasmeijer.com/css/main.css">
+
+
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/solarized-dark.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+ 
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/swift.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/c#.min.js"></script> 
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+ <meta name="generator" content="Hugo 0.53" />
+        
+
+        
+    </head>
+
+    
+    
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <body>
+         
+        <nav class="navbar navbar-default navbar-fixed-top">
+
+            <div class="container">
+
+                <div class="navbar-header">
+
+                    <a class="navbar-brand visible-xs" href="#">There&#39;s no such thing as an API break</a>
+
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                </div>
+
+                <div class="collapse navbar-collapse">
+
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="/">Home</a></li>
+                            
+                                <li><a href="/posts/">Posts</a></li>
+                            
+                        </ul>
+                    
+
+                    
+                        <ul class="nav navbar-nav navbar-right">
+                            
+                                <li class="navbar-icon"><a href="mailto:lucas@lucasmeijer.com"><i class="fa fa-envelope-o"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://twitter.com/lucasmeijer/"><i class="fa fa-twitter"></i></a></li>
+                            
+                        </ul>
+                    
+
+                </div>
+
+            </div>
+
+        </nav>
+
+
+<main>
+
+    <div class="item">
+
+    
+    
+    
+
+    
+    
+
+    <h4><a href="/posts/there_is_no_such_thing_as_an_api_break/">There&#39;s no such thing as an API break</a></h4>
+    <h5>February 2, 2019</h5>
+    
+
+</div>
+
+
+    <br> <div class="text-justify">
+
+<p>Semantic Versioning is pretty popular these days. It basically is a convention that gives some meaning
+to version numbers. Roughly speaking: if your change breaks API, you should bump the major version,
+if you just make an improvement or bugfix bump the minor version.</p>
+
+<p>There&rsquo;s nothing wrong with trying trying to convey a convention that lets authors communicate which
+changes are breaking and which not. What can drive me a bit crazy is when this is mistaken for a rock
+solid way to know if a change is breaking or not.</p>
+
+<h3 id="let-s-talk-about-what-really-is-an-api-break-anyway">Let&rsquo;s talk about what really is an API break anyway.</h3>
+
+<p>In a statically typed language as C#, most people would answer something like:</p>
+
+<p>&ldquo;when you change/remove the signature of any public method/type&rdquo;</p>
+
+<p>If you change a bool to an enum, rename a method, change the returntype, all these things would qualify as a breaking change. It all sounds very much like a binary thing. Either something is an API break, or it is not.</p>
+
+<p>I think this is a very romantic way to look at things. (I stole the romantic label from <a href="https://gist.github.com/jashkenas/cbd2b088e20279ae2c8e">this great post</a>)</p>
+
+<p>When you want to predict if a code change will break any of its users, there is nothing binary about that.
+Let&rsquo;s take a look at a few real world examples that we deal with regularly at Unity:</p>
+
+<ul>
+<li><p>I have a change that improves performance by 10x for most usecases, but there&rsquo;s a niche case that gets 2x slower. Is that an API break?</p></li>
+
+<li><p>I remove a private method that I know is actually used through reflection by a very popular 3rd party package
+that thousands of games are using. Is that an API break?</p></li>
+
+<li><p>I add an overload of a method. (or a new type) it could be there&rsquo;s consuming code which now becomes ambiguous
+where it wasn&rsquo;t previously.  (Unity&rsquo;s packages ship as source, so we care about both source and binary compatibility) Is that an API break?</p></li>
+
+<li><p>I rename a method, but our script updater is automatically able to &ldquo;fix up&rdquo; all consuming code transparently. Is that an API break?</p></li>
+
+<li><p>I have a package that has code &amp; 3d models for driving 2nd world war tanks. Some professor sends me an email
+that informs me I got the measurements on the width of one of the tanks a bit wrong, should be 10cm wider. Is that an API break?   (maybe the tank is used by a game, and now the tank can no longer fit through a certain alley)</p></li>
+</ul>
+
+<p>To me these examples show that looking at this from this black and white perspective is pointless. Instead what
+we should do when we are considering making code changes is:</p>
+
+<ul>
+<li>how many users will this break</li>
+<li>how bad is the break.  are we talking a few % perf in some function, or are we talking game doesn&rsquo;t start.</li>
+<li>how bad is the fix. does the user just have to rename a method, or do they have to rewrite half their game?</li>
+<li>how many users will benefit, and how much</li>
+</ul>
+
+<p>Looking at all these factors you have to make a judgement call. A judgement call on if you want to do the change
+at all. If you want to do the change in this release and major bump. or maybe just minor bump.  Or maybe you want
+to postpone the change, so you can batch it with a bunch of other changes that also require some user work when she updates.</p>
+
+<p>When you make the change, the only thing you can (and should) do is signal your intent of where this change is on the
+grayscale spectrum of breakage. In most cases you have no idea if you actually broke user code, because you don&rsquo;t have
+your users code.</p>
+
+<h3 id="package-managers">Package Managers</h3>
+
+<p>When you want to update a dependency of your project, your package manager (in any language/ecosystem) has to resolve
+all dependencies. Maybe your dependency actually depends on a newer version of another dependency. As it tries to figure out
+which exact version of all these dependencies to grab, it has to make a reasonable guess on which exact versions will work together.
+Having SemVer here is better than nothing. At least there&rsquo;s some intent by the author.   If that set of packages actually works together remains
+to be seen though.</p>
+
+<p>Can we do any better?</p>
+
+<p>Unity authors most of the low level packages that our users, and other Unity authored packages consume. It would help us as authors of these low level packages greatly if we&rsquo;d know if a change we want to make, or made, actually breaks consuming code.</p>
+
+<p>We&rsquo;re building a CI system that can tell us that. Example:</p>
+
+<p>A very low level package we&rsquo;re working on is called Unity.Entities.  It is consumed by most other new
+packages, including say Unity.Rendering.  If we change Unity.Entities, instead of doing a naive scan of the change and say &ldquo;no this is
+not a breaking change as no signatures change&rdquo;,  we actually go and run all packages that we know of that depend on Unity.Entities,
+and run <em>their</em> test suite.</p>
+
+<p>The result of one such &ldquo;compatibility check&rdquo; could be that some unit test failed. If we intended our change to not be breaking, that is good to know, and we should probably adjust our change to indeed be not breaking.  If we intended it to be a breaking change, then we can automatically inform the authors of Unity.Rendering to let them know there&rsquo;s a new version of Unity.Entities in the works, and that at this moment Unity.Rendering is not compatible with it.</p>
+
+<p>This system would not only be used by us internally, but would also allow us to test our changes against all asset store packages (once we have migrated asset store packages to our new package manager, which will take some time&trade; ), and allows us to notify asset store package authors early when we have some changes in the works that will require some modifications on their end.</p>
+
+<p>All of this puts enormous pressure on each package having the ability to let itself be verified if it still works in an automated way.
+I guess that&rsquo;s code speak for: it needs a decent test suite. Making sure all packages have good test suites is hard, but we need to do it anyway,
+how else will we know if anything still works?</p>
+
+<p>Maybe instead of using this compatibility information only to inform authors of both packages, we could also use it to have the package manager
+make better decisions about which packages are <em>actually</em> compatible with each other, instead of romantic faith in a version number.</p>
+
+<h3 id="other-ecosystems-doing-something-similar">Other ecosystems doing something similar?</h3>
+
+<p>I&rsquo;m not aware of any other package ecosystem having automated compatibility testing working, especially not on the code as it&rsquo;s being worked on in a git repo, and not yet in a release. If anybody knows of an ecosystem having a similar setup, I&rsquo;d love to hear about it to try to not make the same mistakes (but new ones! ;p)</p>
+</div>
+
+    
+    
+
+    
+
+    
+
+</main>
+
+        <footer>
+
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a></p>
+
+        </footer>
+       
+    </body>
+
+</html>
+

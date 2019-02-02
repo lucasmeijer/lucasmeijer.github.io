@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://lucasmeijer.com/posts/there_is_no_such_thing_as_an_api_break/</loc>
+    <lastmod>2019-02-02T01:33:37+01:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://lucasmeijer.com/posts/whats_next_after_burst/</loc>
     <lastmod>2019-01-04T03:34:28+01:00</lastmod>
   </url>
@@ -14,7 +19,7 @@
   
   <url>
     <loc>https://lucasmeijer.com/</loc>
-    <lastmod>2019-01-04T03:34:28+01:00</lastmod>
+    <lastmod>2019-02-02T01:33:37+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -25,7 +30,7 @@
   
   <url>
     <loc>https://lucasmeijer.com/posts/</loc>
-    <lastmod>2019-01-04T03:34:28+01:00</lastmod>
+    <lastmod>2019-02-02T01:33:37+01:00</lastmod>
     <priority>0</priority>
   </url>
   
