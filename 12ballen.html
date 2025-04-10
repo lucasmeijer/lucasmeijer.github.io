@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12-Ball Weighing Puzzle Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leader-line-new@1.1.9/leader-line.min.js"></script>
+    <style>
+        body { font-family: sans-serif; }
+        .ball {
+            width: 2.5rem; /* w-10 */
+            height: 2.5rem; /* h-10 */
+            border-radius: 50%; /* rounded-full */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: grab;
+            user-select: none;
+            border-width: 3px;
+            background-color: white; /* Ensure background for visibility */
+        }
+        .ball-unknown { border-color: black; }
+        .ball-lighter { border-color: #4ade80; } /* green-400 */
+        .ball-heavier { border-color: #60a5fa; } /* blue-400 */
+        .ball-normal { border-color: #9ca3af; } /* gray-400 */
+
+        .scale-pan {
+            min-height: 80px;
+            min-width: 120px;
+            border: 2px dashed #cbd5e1; /* cool-gray-300 */
+            padding: 0.5rem; /* p-2 */
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem; /* gap-1 */
+            align-content: flex-start;
+            background-color: #f1f5f9; /* cool-gray-100 */
+        }
+
+        /* SortableJS ghost element style */
+        .sortable-ghost {
+            opacity: 0.4;
+        }
+        .sortable-drag {
+            cursor: grabbing;
+        }
+
+        /* LeaderLine arrows */
+        .leader-line {
+            z-index: 10; /* Ensure arrows are above nodes if needed, adjust as necessary */
+        }
+
+        /* Basic tree layout */
+        #tree-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            overflow: auto; /* Enable scrolling for large tree */
+            min-height: 100vh;
+            position: relative; /* Needed for absolute positioning of nodes or relative line drawing */
+        }
+        .tree-level {
+            display: flex;
+            justify-content: center;
+            gap: 1rem; /* Horizontal space between nodes */
+            margin-bottom: 80px; /* Vertical space between levels, increased for arrows */
+            width: 100%;
+            flex-wrap: wrap; /* Allow nodes to wrap on smaller screens */
+        }
+
+        .node {
+            position: relative; /* For LeaderLine anchor & potential absolute positioning */
+            z-index: 20; /* Nodes should be above lines */
+        }
+
+        /* Hide children initially */
+        .children-hidden .child-node {
+            display: none;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <div id="app" class="container mx-auto p-4">
+
+        <div id="intro" class="mb-6 p-4 bg-white rounded shadow">
+            <h1 class="text-2xl font-bold mb-2 text-center">12-Ball Weighing Puzzle Explorer</h1>
+            <p class="text-gray-700">
+                You have 12 balls, identical in appearance. One ball has a different weight (either heavier or lighter) than the others.
+                Using a balance scale exactly 3 times, identify the unique ball and whether it's heavier or lighter.
+            </p>
+            <p class="text-gray-700 mt-2">
+                Drag balls onto the scale pans in each node to design your weighing experiments. The tree will show the possible outcomes and resulting states of the balls.
+                Click the "Toggle Children" button on a node to reveal the next level based on your weighing setup.
+            </p>
+        </div>
+
+        <div id="legend" class="mb-6 p-4 bg-white rounded shadow flex justify-center items-center gap-4 flex-wrap">
+            <h2 class="text-lg font-semibold mr-4">Ball State Legend:</h2>
+            <div class="flex items-center gap-2"><div class="ball ball-unknown">?</div><span>Unknown (Could be H or L)</span></div>
+            <div class="flex items-center gap-2"><div class="ball ball-lighter">L</div><span>Potentially Lighter</span></div>
+            <div class="flex items-center gap-2"><div class="ball ball-heavier">H</div><span>Potentially Heavier</span></div>
+            <div class="flex items-center gap-2"><div class="ball ball-normal">N</div><span>Normal (Known good)</span></div>
+        </div>
+
+        <div id="tree-container">
+            <!-- Nodes will be dynamically added here -->
+        </div>
+
+    </div>
+
+    <template id="node-template">
+        <div class="node bg-white p-4 rounded-lg shadow-md border border-gray-200 max-w-sm mx-auto" style="width: 350px;">
+            <h3 class="node-id text-lg font-semibold mb-2 text-center"></h3>
+            <div class="balls-pool border border-gray-300 p-2 mb-3 flex flex-wrap gap-1 min-h-[80px] bg-gray-50 rounded">
+                <!-- Balls will be added here -->
+            </div>
+            <div class="scale-container flex justify-center items-start gap-2 mb-3">
+                <div class="scale-pan scale-left" data-pan="left"></div>
+                <div class="text-3xl font-bold mx-2 text-gray-400 flex items-center justify-center" style="height: 80px;">=</div>
+                <div class="scale-pan scale-right" data-pan="right"></div>
+            </div>
+            <button class="toggle-children bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded w-full text-sm">
+                Toggle Children
+            </button>
+            <div class="error-message text-red-500 text-xs mt-1 text-center h-4"></div>
+             <div class="result-summary text-green-700 text-center font-semibold mt-2 h-6"></div>
+        </div>
+    </template>
+
+    <script>
+        const BALL_COUNT = 12;
+        const MAX_WEIGHINGS = 3;
+
+        const BallState = {
+            UNKNOWN: 'unknown', // Black border, could be H or L
+            LIGHTER: 'lighter', // Green border, could be L
+            HEAVIER: 'heavier', // Blue border, could be H
+            NORMAL: 'normal'    // Gray border, known good
+        };
+
+        const WeighOutcome = {
+            LEFT_HEAVY: 'L',
+            BALANCED: 'B',
+            RIGHT_HEAVY: 'R'
+        };
+
+        // Global state
+        const nodes = {}; // Store node data { id: nodeData }
+        const lines = {}; // Store LeaderLine instances { lineId: lineInstance }
+
+        // DOM Elements
+        const treeContainer = document.getElementById('tree-container');
+        const nodeTemplate = document.getElementById('node-template');
+
+        // --- Ball State Logic ---
+
+        function getInitialBallStates() {
+            const states = [];
+            for (let i = 1; i <= BALL_COUNT; i++) {
+                states.push({ id: i, state: BallState.UNKNOWN });
+            }
+            return states;
+        }
+
+        function getBallClass(state) {
+            switch (state) {
+                case BallState.UNKNOWN: return 'ball-unknown';
+                case BallState.LIGHTER: return 'ball-lighter';
+                case BallState.HEAVIER: return 'ball-heavier';
+                case BallState.NORMAL: return 'ball-normal';
+                default: return 'border-gray-300';
+            }
+        }
+
+        function getBallLabel(state) {
+             switch (state) {
+                case BallState.UNKNOWN: return '?';
+                case BallState.LIGHTER: return 'L';
+                case BallState.HEAVIER: return 'H';
+                case BallState.NORMAL: return 'N';
+                default: return '';
+            }
+        }
+
+        // Core weighing logic: Calculates the next state for each ball given the current state and weighing outcome
+        function calculateNextStates(currentBallStates, leftPanIds, rightPanIds, outcome) {
+            const nextStates = JSON.parse(JSON.stringify(currentBallStates)); // Deep copy
+
+            for (const ball of nextStates) {
+                if (ball.state === BallState.NORMAL) continue; // Already known normal
+
+                const isOnLeft = leftPanIds.includes(ball.id);
+                const isOnRight = rightPanIds.includes(ball.id);
+                const isOffScale = !isOnLeft && !isOnRight;
+
+                switch (outcome) {
+                    case WeighOutcome.LEFT_HEAVY: // Left pan went down
+                        if (isOffScale) {
+                            ball.state = BallState.NORMAL;
+                        } else if (isOnLeft) {
+                            if (ball.state === BallState.UNKNOWN) ball.state = BallState.HEAVIER;
+                            else if (ball.state === BallState.LIGHTER) ball.state = BallState.NORMAL; // Contradiction
+                            // if HEAVIER, remains HEAVIER
+                        } else { // isOnRight
+                            if (ball.state === BallState.UNKNOWN) ball.state = BallState.LIGHTER;
+                            else if (ball.state === BallState.HEAVIER) ball.state = BallState.NORMAL; // Contradiction
+                            // if LIGHTER, remains LIGHTER
+                        }
+                        break;
+
+                    case WeighOutcome.BALANCED: // Scale balanced
+                        if (isOnLeft || isOnRight) {
+                            ball.state = BallState.NORMAL;
+                        }
+                        // If off scale, state remains unchanged (could still be the odd one)
+                        break;
+
+                    case WeighOutcome.RIGHT_HEAVY: // Right pan went down
+                         if (isOffScale) {
+                            ball.state = BallState.NORMAL;
+                        } else if (isOnLeft) {
+                            if (ball.state === BallState.UNKNOWN) ball.state = BallState.LIGHTER;
+                             else if (ball.state === BallState.HEAVIER) ball.state = BallState.NORMAL; // Contradiction
+                            // if LIGHTER, remains LIGHTER
+                        } else { // isOnRight
+                            if (ball.state === BallState.UNKNOWN) ball.state = BallState.HEAVIER;
+                            else if (ball.state === BallState.LIGHTER) ball.state = BallState.NORMAL; // Contradiction
+                             // if HEAVIER, remains HEAVIER
+                        }
+                        break;
+                }
+            }
+            // Final check: If all balls become normal, it means the initial state assumption was wrong for this path (shouldn't happen with valid puzzle)
+            // Or if no single ball can explain the outcome (e.g., scale tips with only known-normal balls on it - means weighing invalid)
+             const possibleOddBalls = nextStates.filter(b => b.state !== BallState.NORMAL);
+             if (possibleOddBalls.length === 0 && currentBallStates.some(b => b.state !== BallState.NORMAL)) {
+                 // This path led to a contradiction based on the weighing. Mark all as normal.
+                 // This usually indicates an impossible scenario derived from parent state + weighing outcome
+                // console.warn(`Contradiction detected for outcome ${outcome} in node derived from ${parentId}`);
+                 nextStates.forEach(b => b.state = BallState.NORMAL); // Or handle as error state?
+             }
+
+
+            return nextStates;
+        }
+
+        // --- DOM Manipulation & Rendering ---
+
+        function createBallElement(ballData) {
+            const ballEl = document.createElement('div');
+            ballEl.className = `ball ${getBallClass(ballData.state)}`;
+            ballEl.textContent = ballData.id; // Show ID initially
+            // ballEl.textContent = getBallLabel(ballData.state); // Or show state label
+            ballEl.dataset.ballId = ballData.id;
+            return ballEl;
+        }
+
+        function renderBalls(container, ballStates) {
+            container.innerHTML = ''; // Clear existing balls
+            ballStates.forEach(ballData => {
+                const ballEl = createBallElement(ballData);
+                container.appendChild(ballEl);
+            });
+        }
+
+        function createNodeElement(nodeId, level) {
+            const nodeElement = nodeTemplate.content.firstElementChild.cloneNode(true);
+            nodeElement.id = `node-${nodeId}`;
+            nodeElement.dataset.nodeId = nodeId;
+            nodeElement.querySelector('.node-id').textContent = nodeId;
+            nodeElement.dataset.level = level;
+
+             // Add class to hide children initially by default, remove if needed
+            nodeElement.classList.add('children-hidden');
+
+            // Find the correct level container or create if necessary
+            let levelContainer = treeContainer.querySelector(`.tree-level[data-level="${level}"]`);
+            if (!levelContainer) {
+                levelContainer = document.createElement('div');
+                levelContainer.className = 'tree-level';
+                levelContainer.dataset.level = level;
+                // Ensure levels are appended in order
+                const existingLevels = Array.from(treeContainer.querySelectorAll('.tree-level'));
+                const targetLevel = parseInt(level, 10);
+                let inserted = false;
+                for (let i = 0; i < existingLevels.length; i++) {
+                    if (parseInt(existingLevels[i].dataset.level, 10) > targetLevel) {
+                        treeContainer.insertBefore(levelContainer, existingLevels[i]);
+                        inserted = true;
+                        break;
+                    }
+                }
+                if (!inserted) {
+                    treeContainer.appendChild(levelContainer);
+                }
+            }
+            levelContainer.appendChild(nodeElement);
+
+            return nodeElement;
+        }
+
+        function updateNodeAppearance(nodeId) {
+            const nodeData = nodes[nodeId];
+            if (!nodeData || !nodeData.element) return;
+
+            const ballPool = nodeData.element.querySelector('.balls-pool');
+            const leftPan = nodeData.element.querySelector('.scale-left');
+            const rightPan = nodeData.element.querySelector('.scale-right');
+            const resultSummary = nodeData.element.querySelector('.result-summary');
+
+            // Clear existing balls in pool and pans before re-rendering
+            ballPool.innerHTML = '';
+            leftPan.innerHTML = '';
+            rightPan.innerHTML = '';
+            resultSummary.textContent = ''; // Clear previous result
+
+            const ballsOnScale = new Set([...nodeData.leftPanIds, ...nodeData.rightPanIds]);
+
+            nodeData.ballStates.forEach(ballData => {
+                const ballEl = createBallElement(ballData);
+                if (nodeData.leftPanIds.includes(ballData.id)) {
+                    leftPan.appendChild(ballEl);
+                } else if (nodeData.rightPanIds.includes(ballData.id)) {
+                    rightPan.appendChild(ballEl);
+                } else {
+                    // Only add to pool if not on scale
+                    ballPool.appendChild(ballEl);
+                }
+            });
+
+            // Update result summary if this is a leaf node
+            if (nodeData.level === MAX_WEIGHINGS) {
+                 const potentialOddballs = nodeData.ballStates.filter(b => b.state !== BallState.NORMAL);
+                 if (potentialOddballs.length === 1) {
+                     const oddball = potentialOddballs[0];
+                     const stateText = oddball.state === BallState.HEAVIER ? 'Heavier' : 'Lighter';
+                     resultSummary.textContent = `Result: Ball ${oddball.id} is ${stateText}`;
+                 } else if (potentialOddballs.length === 0 && nodeData.ballStates.every(b => b.state === BallState.NORMAL)) {
+                     resultSummary.textContent = `Result: All balls are normal (Contradiction?)`;
+                 } else {
+                      resultSummary.textContent = `Result: Ambiguous (${potentialOddballs.length} possibilities)`;
+                 }
+            }
+
+            // Make sure SortableJS instances are updated/reinitialized if needed
+            setupSortableForNode(nodeId);
+        }
+
+
+        // --- SortableJS Integration ---
+
+        function setupSortableForNode(nodeId) {
+            const nodeData = nodes[nodeId];
+            if (!nodeData || !nodeData.element || nodeData.level === MAX_WEIGHINGS) return; // No weighing on last level
+
+            const ballPoolEl = nodeData.element.querySelector('.balls-pool');
+            const leftPanEl = nodeData.element.querySelector('.scale-left');
+            const rightPanEl = nodeData.element.querySelector('.scale-right');
+            const errorMsgEl = nodeData.element.querySelector('.error-message');
+
+            const commonSortableOptions = {
+                group: `balls-${nodeId}`,
+                animation: 150,
+                ghostClass: 'sortable-ghost',
+                dragClass: 'sortable-drag',
+                onEnd: (evt) => handleDragEnd(nodeId, errorMsgEl), // Use onEnd to capture final state
+            };
+
+            // Destroy existing instances first to prevent duplicates
+            if (nodeData.sortableInstances) {
+                nodeData.sortableInstances.forEach(s => s.destroy());
+            }
+            nodeData.sortableInstances = [];
+
+             // Pool: Can drag FROM pool (clone), can receive back TO pool
+            nodeData.sortableInstances.push(new Sortable(ballPoolEl, {
+                ...commonSortableOptions,
+                group: { name: `balls-${nodeId}`, pull: 'clone', put: true },
+                sort: false // Don't sort within the pool
+            }));
+
+            // Left Pan: Can drag FROM pan (move), can receive TO pan
+            nodeData.sortableInstances.push(new Sortable(leftPanEl, {
+                ...commonSortableOptions,
+                 group: { name: `balls-${nodeId}`, pull: true, put: true },
+            }));
+
+            // Right Pan: Can drag FROM pan (move), can receive TO pan
+             nodeData.sortableInstances.push(new Sortable(rightPanEl, {
+                ...commonSortableOptions,
+                 group: { name: `balls-${nodeId}`, pull: true, put: true },
+            }));
+        }
+
+        function handleDragEnd(nodeId, errorMsgEl) {
+            const nodeData = nodes[nodeId];
+            if (!nodeData || !nodeData.element) return;
+
+            const leftPanEl = nodeData.element.querySelector('.scale-left');
+            const rightPanEl = nodeData.element.querySelector('.scale-right');
+
+            // Update node state based on DOM
+            nodeData.leftPanIds = Array.from(leftPanEl.querySelectorAll('.ball')).map(el => parseInt(el.dataset.ballId));
+            nodeData.rightPanIds = Array.from(rightPanEl.querySelectorAll('.ball')).map(el => parseInt(el.dataset.ballId));
+
+            // Validate scale balance
+            errorMsgEl.textContent = ''; // Clear previous error
+            if (nodeData.leftPanIds.length !== nodeData.rightPanIds.length) {
+                 errorMsgEl.textContent = 'Pans must have equal number of balls.';
+                 clearChildren(nodeId); // Clear subsequent nodes if weighing becomes invalid
+                 return;
+            }
+             if (nodeData.leftPanIds.length === 0) {
+                 errorMsgEl.textContent = 'Place balls on the scale to weigh.';
+                 clearChildren(nodeId);
+                 return;
+             }
+
+
+            // Recalculate children
+            recalculateNodeChildren(nodeId);
+
+            // Re-render the current node's ball pool to ensure clones are handled correctly
+            // (SortableJS clone behavior might leave originals if not put back)
+             updateNodeAppearance(nodeId);
+        }
+
+
+        // --- Decision Tree Logic ---
+
+        function recalculateNodeChildren(parentId) {
+            const parentNode = nodes[parentId];
+            if (!parentNode || parentNode.level >= MAX_WEIGHINGS) return;
+
+            // Clear existing children data and lines first
+            clearChildren(parentId);
+
+            const leftPanIds = parentNode.leftPanIds;
+            const rightPanIds = parentNode.rightPanIds;
+
+            // Only proceed if weighing is valid (equal balls, non-empty)
+            if (leftPanIds.length === 0 || leftPanIds.length !== rightPanIds.length) {
+                 // console.log(`Invalid weighing for node ${parentId}. Children not calculated.`);
+                 return;
+            }
+
+            const outcomes = [WeighOutcome.LEFT_HEAVY, WeighOutcome.BALANCED, WeighOutcome.RIGHT_HEAVY];
+            const nextLevel = parentNode.level + 1;
+
+            outcomes.forEach(outcome => {
+                const childId = `${parentId}-${outcome}`;
+                const childBallStates = calculateNextStates(parentNode.ballStates, leftPanIds, rightPanIds, outcome);
+
+                // Create or update child node data
+                const childNodeData = {
+                    id: childId,
+                    parentId: parentId,
+                    level: nextLevel,
+                    ballStates: childBallStates,
+                    leftPanIds: [], // Reset scale for next level
+                    rightPanIds: [],
+                    element: null, // Will be created if shown
+                    childrenVisible: false, // Children start hidden
+                    sortableInstances: [], // Initialize sortable instances array
+                    children: { L: null, B: null, R: null } // Initialize children references
+                };
+                nodes[childId] = childNodeData;
+                parentNode.children[outcome] = childId;
+
+                // If parent's children are visible, create/update the child element and draw line
+                 if (!parentNode.element.classList.contains('children-hidden')) {
+                    renderChildNodeAndLine(parentId, childId);
+                }
+            });
+
+            // Update parent element state (e.g., remove error message if now valid)
+            parentNode.element.querySelector('.error-message').textContent = '';
+        }
+
+         function renderChildNodeAndLine(parentId, childId) {
+             const parentNode = nodes[parentId];
+             const childNode = nodes[childId];
+             if (!childNode) return;
+
+             // Create or get child element
+             if (!childNode.element) {
+                 childNode.element = createNodeElement(childId, childNode.level);
+                 // Set up interactions for the new node
+                 childNode.element.querySelector('.toggle-children').addEventListener('click', () => toggleChildrenVisibility(childId));
+                 updateNodeAppearance(childId); // Render balls etc.
+                  // Do not setup sortable if it's the last level
+                 if (childNode.level < MAX_WEIGHINGS) {
+                     setupSortableForNode(childId);
+                 } else {
+                     // Disable interactions for leaf nodes if needed
+                     childNode.element.querySelector('.balls-pool').textContent = "Final State";
+                     childNode.element.querySelector('.scale-container').style.display = 'none';
+                     childNode.element.querySelector('.toggle-children').style.display = 'none';
+                 }
+             } else {
+                 // Ensure it's visible if it was hidden before
+                 childNode.element.style.display = '';
+                 // Update appearance in case ball states changed
+                 updateNodeAppearance(childId);
+             }
+
+
+            // Draw or update the line
+            drawArrow(parentId, childId);
+         }
+
+        function clearChildren(parentId) {
+             const parentNode = nodes[parentId];
+             if (!parentNode) return;
+
+             // Recursively clear grandchildren first
+             Object.values(parentNode.children).forEach(childId => {
+                 if (childId && nodes[childId]) {
+                     clearChildren(childId); // Clear grandchildren
+
+                     // Remove line associated with this child
+                     const lineId = `${parentId}_${childId}`;
+                     if (lines[lineId]) {
+                         lines[lineId].remove();
+                         delete lines[lineId];
+                     }
+
+                     // Remove child node element from DOM
+                     if (nodes[childId].element) {
+                          nodes[childId].element.remove();
+                     }
+                    // Destroy sortable instances if they exist
+                    if (nodes[childId].sortableInstances) {
+                        nodes[childId].sortableInstances.forEach(s => s.destroy());
+                    }
+
+                     // Delete child node data
+                     delete nodes[childId];
+                 }
+             });
+
+            // Reset parent's children references
+             parentNode.children = { L: null, B: null, R: null };
+        }
+
+
+        function toggleChildrenVisibility(nodeId) {
+            const nodeData = nodes[nodeId];
+            if (!nodeData || !nodeData.element || nodeData.level >= MAX_WEIGHINGS) return;
+
+            const nodeElement = nodeData.element;
+            const childrenWereHidden = nodeElement.classList.contains('children-hidden');
+
+            if (childrenWereHidden) {
+                // Show children: Remove class, render nodes/lines if needed
+                nodeElement.classList.remove('children-hidden');
+
+                 // Check if children need recalculation (e.g., scale was invalid before)
+                if (!nodeData.children.L && !nodeData.children.B && !nodeData.children.R) {
+                    recalculateNodeChildren(nodeId); // Try calculating them now
+                }
+
+                Object.values(nodeData.children).forEach(childId => {
+                    if (childId) {
+                        // Ensure child exists and is rendered, then draw line
+                         renderChildNodeAndLine(nodeId, childId); // Creates element if needed, draws line
+                    }
+                });
+                // Small delay to ensure elements are in DOM for LeaderLine
+                setTimeout(updateAllVisibleLines, 50);
+
+            } else {
+                // Hide children: Add class, remove lines
+                nodeElement.classList.add('children-hidden');
+                 Object.values(nodeData.children).forEach(childId => {
+                     if (childId) {
+                         const lineId = `${nodeId}_${childId}`;
+                         if (lines[lineId]) {
+                             lines[lineId].hide('none'); // Use hide instead of remove if toggling often
+                         }
+                         // Optionally hide the child node element itself if desired
+                         // if (nodes[childId] && nodes[childId].element) {
+                         //     nodes[childId].element.style.display = 'none';
+                         // }
+                     }
+                 });
+            }
+        }
+
+
+        // --- Arrow Drawing ---
+
+        function drawArrow(parentId, childId) {
+            const parentEl = nodes[parentId]?.element;
+            const childEl = nodes[childId]?.element;
+
+            if (!parentEl || !childEl) {
+                 console.warn(`Cannot draw arrow: Missing element for ${parentId} or ${childId}`);
+                 return;
+             }
+
+             const lineId = `${parentId}_${childId}`;
+
+             // Remove existing line if any
+             if (lines[lineId]) {
+                 lines[lineId].remove();
+             }
+
+             try {
+                const outcome = childId.slice(-1); // L, B, or R
+                let color = 'gray';
+                if (outcome === 'L') color = 'rgba(239, 68, 68, 0.7)'; // red-500
+                else if (outcome === 'B') color = 'rgba(34, 197, 94, 0.7)'; // green-500
+                else if (outcome === 'R') color = 'rgba(59, 130, 246, 0.7)'; // blue-500
+
+                 lines[lineId] = new LeaderLine(
+                     LeaderLine.pointAnchor(parentEl, { x: '50%', y: '100%' }), // Bottom center of parent
+                     LeaderLine.pointAnchor(childEl, { x: '50%', y: '0%' }),   // Top center of child
+                     {
+                         color: color,
+                         size: 3,
+                         path: 'fluid', // 'straight', 'arc', 'fluid', 'magnet', 'grid'
+                         // startSocket: 'bottom',
+                         // endSocket: 'top',
+                         endPlug: 'arrow1',
+                         // dash: { animation: true } // Optional animation
+                     }
+                 );
+             } catch (e) {
+                 console.error("Error creating LeaderLine:", e, "between", parentId, childId);
+             }
+        }
+
+        // Function to update all visible lines (e.g., on scroll or window resize)
+        function updateAllVisibleLines() {
+            Object.values(lines).forEach(line => {
+                try {
+                    if (line) line.position();
+                 } catch (e) {
+                     // Ignore errors if element is gone, line might be removed shortly
+                 }
+            });
+        }
+
+
+        // --- Initialization ---
+
+        function initialize() {
+            // Create Root Node (E0)
+            const rootId = 'E0';
+            const rootNodeData = {
+                id: rootId,
+                parentId: null,
+                level: 0,
+                ballStates: getInitialBallStates(),
+                leftPanIds: [],
+                rightPanIds: [],
+                element: createNodeElement(rootId, 0),
+                childrenVisible: false, // Start with children hidden
+                sortableInstances: [],
+                children: { L: null, B: null, R: null }
+            };
+            nodes[rootId] = rootNodeData;
+
+            // Render initial balls and setup interactions for root node
+            updateNodeAppearance(rootId); // Renders balls into pool
+            setupSortableForNode(rootId);
+
+             // Set up toggle button for root node
+             rootNodeData.element.querySelector('.toggle-children').addEventListener('click', () => toggleChildrenVisibility(rootId));
+
+             // Make root node's children visible by default? Or require toggle? Let's require toggle.
+             rootNodeData.element.classList.add('children-hidden');
+
+
+            // Add listeners for window resize/scroll to update lines
+            window.addEventListener('resize', updateAllVisibleLines);
+            treeContainer.addEventListener('scroll', updateAllVisibleLines); // Use tree container scroll
+
+            console.log("12-Ball Puzzle Explorer Initialized.");
+        }
+
+        // Start the application
+        initialize();
+
+    </script>
+
+</body>
+</html>
