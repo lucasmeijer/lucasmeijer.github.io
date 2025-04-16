@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remote Execution Result</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Simple transition for tree folding */
+        .tree-node ul {
+            transition: max-height 0.3s ease-out;
+            overflow: hidden;
+        }
+        .tree-node ul.hidden {
+            max-height: 0;
+        }
+        .tree-node > span:hover {
+             cursor: pointer;
+             opacity: 0.8;
+        }
+        /* Ensure icons don't wrap */
+        .tree-toggle-icon {
+            display: inline-block;
+            width: 1.2em; /* Adjust width as needed */
+            text-align: center;
+        }
+        /* Style for linked paths in code blocks */
+        code a {
+            text-decoration: underline;
+            color: #2563eb; /* blue-600 */
+        }
+        code a:hover {
+            color: #1d4ed8; /* blue-700 */
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-100 to-blue-50 font-sans text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 lg:p-12">
+
+        <header class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-900">Remote Execution Result</h1>
+            <p class="text-lg text-gray-600">Summary of the executed command and its artifacts.</p>
+        </header>
+
+        <main class="space-y-8">
+
+            <!-- Key Information Section -->
+            <section class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+                <h2 class="text-2xl font-semibold mb-5 text-gray-800 border-b pb-2">Execution Summary</h2>
+                <div class="space-y-4">
+                    <div>
+                        <span class="text-sm font-medium text-gray-500 block mb-1">Command Line</span>
+                        <code class="block bg-gray-100 p-3 rounded-md text-sm text-gray-700 overflow-x-auto whitespace-pre-wrap break-words">
+gcc -Wall -O2 src/main.c src/utils.c -o build/app -Iinclude -Llib -lmath -pthread
+                        </code>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <span class="text-sm font-medium text-gray-500 block mb-1">Exit Code</span>
+                            <span class="text-xl font-semibold text-green-600 bg-green-100 px-3 py-1 rounded-full inline-block">0</span>
+                            <!-- Example for non-zero exit code: -->
+                            <!-- <span class="text-xl font-semibold text-red-600 bg-red-100 px-3 py-1 rounded-full inline-block">1</span> -->
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500 block mb-1">Execution Time</span>
+                            <span class="text-xl font-semibold text-gray-700">1m 23s</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Standard Output Section -->
+            <section class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+                <h2 class="text-2xl font-semibold mb-5 text-gray-800 border-b pb-2">Standard Output</h2>
+                <div>
+                    <code class="block bg-gray-100 p-3 rounded-md text-sm text-gray-700 overflow-x-auto whitespace-pre">
+Compiling <a href="#" class="text-blue-600 hover:underline">src/main.c</a>...
+Compiling <a href="#" class="text-blue-600 hover:underline">src/utils.c</a>...
+<a href="#" class="text-blue-600 hover:underline">src/utils.c</a>:<span class="font-bold">15</span>:<span class="font-bold">10</span>: <span class="text-yellow-600 font-semibold">warning:</span> unused variable 'temp_buffer' [-Wunused-variable]
+    char temp_buffer[1024];
+         <span class="text-green-600">^~~~~~~~~~~</span>
+<a href="#" class="text-blue-600 hover:underline">src/utils.c</a>:<span class="font-bold">88</span>:<span class="font-bold">5</span>: <span class="text-yellow-600 font-semibold">warning:</span> control reaches end of non-void function [-Wreturn-type]
+    }
+    <span class="text-green-600">^</span>
+Compiling <a href="#" class="text-blue-600 hover:underline">src/components/parser.c</a>...
+Compiling <a href="#" class="text-blue-600 hover:underline">src/components/lexer.c</a>...
+Linking build/app...
+<span class="font-semibold">Build successful</span> with 2 warnings. Output at <a href="#" class="text-blue-600 hover:underline">build/app</a>
+                    </code>
+                </div>
+            </section>
+
+            <!-- Detailed Information Section -->
+            <section class="bg-white p-6 rounded-xl shadow-md border border-gray-200">
+                 <h2 class="text-xl font-semibold mb-4 text-gray-700">Details</h2>
+                 <dl class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3 text-sm">
+                     <div class="bg-gray-50 p-3 rounded-lg">
+                         <dt class="font-medium text-gray-600">Scheduling Time</dt>
+                         <dd class="text-gray-800 mt-1">12s</dd>
+                     </div>
+                     <div class="bg-gray-50 p-3 rounded-lg">
+                         <dt class="font-medium text-gray-600">Finished</dt>
+                         <dd class="text-gray-800 mt-1">3 minutes ago</dd>
+                         <!-- Alternative: <dd class="text-gray-800 mt-1">2025-04-16 13:15:10 CEST</dd> -->
+                     </div>
+                     <div class="bg-gray-50 p-3 rounded-lg">
+                         <dt class="font-medium text-gray-600">Peak Memory Usage</dt>
+                         <dd class="text-gray-800 mt-1">256.7 MB</dd>
+                     </div>
+                     <div class="bg-gray-50 p-3 rounded-lg">
+                         <dt class="font-medium text-gray-600">CAS Upload Time</dt>
+                         <dd class="text-gray-800 mt-1">4.5s</dd>
+                     </div>
+                     <div class="bg-gray-50 p-3 rounded-lg">
+                        <dt class="font-medium text-gray-600">Worker</dt>
+                        <dd class="text-gray-800 mt-1">worker-node-a7b3f</dd>
+                    </div>
+                 </dl>
+            </section>
+
+            <!-- Input/Output Trees Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                <!-- Input Root Tree -->
+                <section class="bg-white p-6 rounded-xl shadow-md border border-gray-200">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-700">Input Root</h2>
+                    <ul class="text-sm space-y-1">
+                        <li class="tree-node">
+                            <span class="tree-toggle font-medium text-gray-800"><span class="tree-toggle-icon">▼</span> src/</span>
+                            <ul class="ml-6 space-y-1 border-l border-gray-300 pl-3 pt-1">
+                                <li><a href="#" class="text-blue-600 hover:underline">main.c</a> <span class="text-xs text-gray-500 ml-1">(12.5 KB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">utils.c</a> <span class="text-xs text-gray-500 ml-1">(8.1 KB)</span></li>
+                                <li class="tree-node">
+                                    <span class="tree-toggle font-medium text-gray-800"><span class="tree-toggle-icon">▼</span> components/</span>
+                                    <ul class="ml-6 space-y-1 border-l border-gray-300 pl-3 pt-1">
+                                        <li><a href="#" class="text-blue-600 hover:underline">parser.c</a> <span class="text-xs text-gray-500 ml-1">(5.2 KB)</span></li>
+                                        <li><a href="#" class="text-blue-600 hover:underline">lexer.c</a> <span class="text-xs text-gray-500 ml-1">(4.8 KB)</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="tree-node">
+                            <span class="tree-toggle font-medium text-gray-800"><span class="tree-toggle-icon">▼</span> include/</span>
+                             <ul class="ml-6 space-y-1 border-l border-gray-300 pl-3 pt-1">
+                                <li><a href="#" class="text-blue-600 hover:underline">utils.h</a> <span class="text-xs text-gray-500 ml-1">(1.1 KB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">parser.h</a> <span class="text-xs text-gray-500 ml-1">(0.8 KB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">lexer.h</a> <span class="text-xs text-gray-500 ml-1">(0.9 KB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">common.h</a> <span class="text-xs text-gray-500 ml-1">(2.5 KB)</span></li>
+                            </ul>
+                        </li>
+                         <li class="tree-node">
+                            <span class="tree-toggle font-medium text-gray-800"><span class="tree-toggle-icon">▼</span> lib/</span>
+                             <ul class="ml-6 space-y-1 border-l border-gray-300 pl-3 pt-1">
+                                <li><a href="#" class="text-blue-600 hover:underline">libmath.a</a> <span class="text-xs text-gray-500 ml-1">(150.3 KB)</span></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" class="text-blue-600 hover:underline">Makefile</a> <span class="text-xs text-gray-500 ml-1">(0.5 KB)</span></li>
+                        <li><a href="#" class="text-blue-600 hover:underline">config.json</a> <span class="text-xs text-gray-500 ml-1">(1.8 KB)</span></li>
+                         <li class="tree-node">
+                            <span class="tree-toggle font-medium text-gray-800"><span class="tree-toggle-icon">▶</span> large_data_set/</span> <!-- Initially collapsed -->
+                             <ul class="ml-6 space-y-1 border-l border-gray-300 pl-3 pt-1 hidden">
+                                <li><a href="#" class="text-blue-600 hover:underline">data_01.bin</a> <span class="text-xs text-gray-500 ml-1">(1.1 MB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">data_02.bin</a> <span class="text-xs text-gray-500 ml-1">(1.2 MB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">data_03.bin</a> <span class="text-xs text-gray-500 ml-1">(1.0 MB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">data_04.bin</a> <span class="text-xs text-gray-500 ml-1">(1.3 MB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">data_05.bin</a> <span class="text-xs text-gray-500 ml-1">(1.1 MB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">data_06.bin</a> <span class="text-xs text-gray-500 ml-1">(1.2 MB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">data_07.bin</a> <span class="text-xs text-gray-500 ml-1">(1.4 MB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">data_08.bin</a> <span class="text-xs text-gray-500 ml-1">(1.1 MB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">data_09.bin</a> <span class="text-xs text-gray-500 ml-1">(1.2 MB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">data_10.bin</a> <span class="text-xs text-gray-500 ml-1">(1.0 MB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">data_11.bin</a> <span class="text-xs text-gray-500 ml-1">(1.3 MB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">index.txt</a> <span class="text-xs text-gray-500 ml-1">(0.2 KB)</span></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Produced Outputs Tree -->
+                 <section class="bg-white p-6 rounded-xl shadow-md border border-gray-200">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-700">Produced Outputs</h2>
+                    <ul class="text-sm space-y-1">
+                       <li class="tree-node">
+                            <span class="tree-toggle font-medium text-gray-800"><span class="tree-toggle-icon">▼</span> build/</span>
+                            <ul class="ml-6 space-y-1 border-l border-gray-300 pl-3 pt-1">
+                                <li><a href="#" class="text-blue-600 hover:underline">app</a> <span class="text-xs text-gray-500 ml-1">(1.2 MB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">main.o</a> <span class="text-xs text-gray-500 ml-1">(25.3 KB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">utils.o</a> <span class="text-xs text-gray-500 ml-1">(18.9 KB)</span></li>
+                                <li class="tree-node">
+                                    <span class="tree-toggle font-medium text-gray-800"><span class="tree-toggle-icon">▼</span> components/</span>
+                                    <ul class="ml-6 space-y-1 border-l border-gray-300 pl-3 pt-1">
+                                        <li><a href="#" class="text-blue-600 hover:underline">parser.o</a> <span class="text-xs text-gray-500 ml-1">(11.5 KB)</span></li>
+                                        <li><a href="#" class="text-blue-600 hover:underline">lexer.o</a> <span class="text-xs text-gray-500 ml-1">(9.7 KB)</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="tree-node">
+                            <span class="tree-toggle font-medium text-gray-800"><span class="tree-toggle-icon">▼</span> logs/</span>
+                             <ul class="ml-6 space-y-1 border-l border-gray-300 pl-3 pt-1">
+                                <li><a href="#" class="text-blue-600 hover:underline">compiler.log</a> <span class="text-xs text-gray-500 ml-1">(0.8 KB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">linker.log</a> <span class="text-xs text-gray-500 ml-1">(0.2 KB)</span></li>
+                            </ul>
+                        </li>
+                         <!-- Example of >10 items in output (will start collapsed) -->
+                         <li class="tree-node">
+                            <span class="tree-toggle font-medium text-gray-800"><span class="tree-toggle-icon">▶</span> generated_reports/</span> <!-- Initially collapsed -->
+                             <ul class="ml-6 space-y-1 border-l border-gray-300 pl-3 pt-1 hidden">
+                                <li><a href="#" class="text-blue-600 hover:underline">report_001.xml</a> <span class="text-xs text-gray-500 ml-1">(5.1 KB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">report_002.xml</a> <span class="text-xs text-gray-500 ml-1">(5.2 KB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">report_003.xml</a> <span class="text-xs text-gray-500 ml-1">(5.0 KB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">report_004.xml</a> <span class="text-xs text-gray-500 ml-1">(5.3 KB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">report_005.xml</a> <span class="text-xs text-gray-500 ml-1">(5.1 KB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">report_006.xml</a> <span class="text-xs text-gray-500 ml-1">(5.2 KB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">report_007.xml</a> <span class="text-xs text-gray-500 ml-1">(5.4 KB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">report_008.xml</a> <span class="text-xs text-gray-500 ml-1">(5.1 KB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">report_009.xml</a> <span class="text-xs text-gray-500 ml-1">(5.2 KB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">report_010.xml</a> <span class="text-xs text-gray-500 ml-1">(5.0 KB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">report_011.xml</a> <span class="text-xs text-gray-500 ml-1">(5.3 KB)</span></li>
+                                <li><a href="#" class="text-blue-600 hover:underline">summary.json</a> <span class="text-xs text-gray-500 ml-1">(1.2 KB)</span></li>
+                             </ul>
+                        </li>
+                    </ul>
+                </section>
+
+            </div>
+
+        </main>
+
+        <footer class="mt-12 text-center text-sm text-gray-500">
+            <p>Generated on: Wednesday, 16 April 2025 at 13:21:07 Central European Summer Time</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const MAX_CHILDREN_EXPANDED = 10;
+
+            document.querySelectorAll('.tree-toggle').forEach(toggle => {
+                const parentLi = toggle.closest('.tree-node');
+                const childUl = parentLi.querySelector(':scope > ul');
+                const icon = toggle.querySelector('.tree-toggle-icon');
+
+                if (childUl) {
+                    // Set initial state based on child count
+                    const directChildrenCount = childUl.querySelectorAll(':scope > li').length;
+                    if (directChildrenCount > MAX_CHILDREN_EXPANDED) {
+                        childUl.classList.add('hidden');
+                        icon.textContent = '▶';
+                         // Set max-height for collapsed state (needed for transition)
+                        childUl.style.maxHeight = '0';
+                    } else {
+                        childUl.classList.remove('hidden');
+                        icon.textContent = '▼';
+                         // Set max-height for expanded state (use a large enough value)
+                        childUl.style.maxHeight = childUl.scrollHeight + 'px';
+                    }
+
+                    // Add click listener for toggling
+                    toggle.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const isHidden = childUl.classList.toggle('hidden');
+                        icon.textContent = isHidden ? '▶' : '▼';
+
+                        // Animate max-height
+                        if (isHidden) {
+                            childUl.style.maxHeight = '0';
+                        } else {
+                             // Set max-height based on content size for smooth expansion
+                            childUl.style.maxHeight = childUl.scrollHeight + 'px';
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
