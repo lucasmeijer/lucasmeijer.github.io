@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #F9F3EC;
+  --ink: #243231;
+  --sage: #8E9B86;
+  --mustard: #D79E36;
+  --card: #fdf9f3;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 0 1.5rem 3rem;
+  justify-content: flex-start;
+  text-align: center;
+}
+
+.logo {
+  width: min(340px, 70vw);
+  height: auto;
+  margin: -2.5rem 0 -3rem;
+}
+
+.tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.05rem, 2.6vw, 1.5rem);
+  letter-spacing: 0.32em;
+  text-transform: lowercase;
+  color: var(--sage);
+  margin-top: -1.25rem;
+}
+
+/* video */
+.video {
+  width: min(720px, 92vw);
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #efe7d8, #f4ede1);
+  border: 1px solid rgba(36, 50, 49, 0.08);
+  box-shadow: 0 24px 60px -28px rgba(36, 50, 49, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.video .play {
+  width: 76px; height: 76px;
+  border-radius: 50%;
+  background: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .2s ease;
+}
+.video:hover .play { transform: scale(1.06); }
+.video .play::after {
+  content: "";
+  margin-left: 5px;
+  border-left: 20px solid var(--bg);
+  border-top: 13px solid transparent;
+  border-bottom: 13px solid transparent;
+}
+.video .label {
+  position: absolute;
+  bottom: 14px;
+  font-size: .72rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(36,50,49,.45);
+}
+
+/* installer */
+.installer {
+  width: min(720px, 92vw);
+}
+.installer .hint {
+  font-size: .8rem;
+  letter-spacing: .08em;
+  text-transform: none;
+  color: var(--sage);
+  margin-bottom: .9rem;
+}
+.cmd {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--ink);
+  color: #f4ede1;
+  border-radius: 12px;
+  padding: 1.05rem 1.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(.82rem, 2.3vw, 1rem);
+  text-align: left;
+  box-shadow: 0 18px 40px -24px rgba(36,50,49,.6);
+}
+.cmd code { flex: 1; white-space: nowrap; overflow-x: auto; }
+.cmd code .prompt { color: var(--mustard); margin-right: .6rem; user-select: none; }
+.cmd code .flag { color: #c9d3bf; }
+.copy {
+  border: 1px solid rgba(244,237,225,.22);
+  background: transparent;
+  color: #f4ede1;
+  border-radius: 8px;
+  padding: .5rem .85rem;
+  font: inherit;
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background .15s ease;
+  white-space: nowrap;
+}
+.copy:hover { background: rgba(244,237,225,.12); }
+.copy.copied { background: var(--mustard); border-color: var(--mustard); color: var(--ink); }
+
+footer {
+  font-size: .72rem;
+  letter-spacing: .18em;
+  color: rgba(36,50,49,.4);
+  text-transform: uppercase;
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>atelier — made for humans</title>
+  <link rel="icon" href="logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <img class="logo" src="logo.png" alt="atelier — made for humans" />
+
+  <!-- video (placeholder) -->
+  <div class="video" role="button" aria-label="Play intro video">
+    <div class="play"></div>
+    <span class="label">watch the demo</span>
+  </div>
+
+  <!-- one-line installer -->
+  <div class="installer">
+    <p class="hint">Run this on an always-on Linux computer that only you have access to.</p>
+    <div class="cmd">
+      <code id="cmd"><span class="prompt">$</span>curl <span class="flag">-fsSL</span> getatelier.com/install.sh | bash</code>
+      <button class="copy" id="copy">Copy</button>
+    </div>
+  </div>
+
+
+  <script>
+    const btn = document.getElementById('copy');
+    btn.addEventListener('click', async () => {
+      const text = 'curl -fsSL getatelier.com/install.sh | bash';
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (e) {
+        const t = document.createElement('textarea');
+        t.value = text; document.body.appendChild(t); t.select();
+        document.execCommand('copy'); t.remove();
+      }
+      btn.textContent = 'Copied';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1600);
+    });
+  </script>
+</body>
+</html>
