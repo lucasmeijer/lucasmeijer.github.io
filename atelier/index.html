@@ -17,30 +17,50 @@
     <span class="label">watch the demo</span>
   </div>
 
-  <!-- one-line installer -->
-  <div class="installer">
-    <p class="hint">Run this on an always-on Linux computer that only you have access to.</p>
-    <div class="cmd">
-      <code id="cmd"><span class="prompt">$</span>curl <span class="flag">-fsSL</span> getatelier.com/install.sh | bash</code>
-      <button class="copy" id="copy">Copy</button>
-    </div>
+  <!-- waitlist signup -->
+  <div class="waitlist">
+    <p class="hint">Sign up for the waitlist.</p>
+    <form id="waitlist-form" class="signup"
+          action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value="f2a351b6-14b2-4641-b5fd-ffd2afa015d2" />
+      <input type="hidden" name="subject" value="New atelier waitlist signup" />
+      <input type="checkbox" name="botcheck" class="hidden" style="display:none" />
+      <input type="email" name="email" id="email" required
+             placeholder="you@example.com" autocomplete="email" />
+      <button type="submit" class="submit">Join</button>
+    </form>
+    <p class="signup-msg" id="signup-msg" hidden></p>
   </div>
 
 
   <script>
-    const btn = document.getElementById('copy');
-    btn.addEventListener('click', async () => {
-      const text = 'curl -fsSL getatelier.com/install.sh | bash';
+    const form = document.getElementById('waitlist-form');
+    const msg = document.getElementById('signup-msg');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('.submit');
+      if (!form.email.value) return;
+      btn.disabled = true;
+      btn.textContent = '...';
       try {
-        await navigator.clipboard.writeText(text);
-      } catch (e) {
-        const t = document.createElement('textarea');
-        t.value = text; document.body.appendChild(t); t.select();
-        document.execCommand('copy'); t.remove();
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' },
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.message || 'failed');
+        form.hidden = true;
+        msg.textContent = "You're on the list. We'll be in touch.";
+        msg.classList.add('ok');
+        msg.hidden = false;
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Join';
+        msg.textContent = 'Something went wrong \u2014 please try again.';
+        msg.classList.add('err');
+        msg.hidden = false;
       }
-      btn.textContent = 'Copied';
-      btn.classList.add('copied');
-      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1600);
     });
   </script>
 </body>

@@ -83,49 +83,58 @@ body {
   color: rgba(36,50,49,.45);
 }
 
-/* installer */
-.installer {
-  width: min(720px, 92vw);
+/* waitlist */
+.waitlist {
+  width: min(440px, 92vw);
 }
-.installer .hint {
-  font-size: .8rem;
-  letter-spacing: .08em;
-  text-transform: none;
+.waitlist .hint {
+  font-size: .95rem;
+  letter-spacing: .02em;
   color: var(--sage);
-  margin-bottom: .9rem;
+  margin-bottom: 1rem;
 }
-.cmd {
+.signup {
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  gap: .6rem;
+}
+.signup input[type="email"] {
+  flex: 1;
+  min-width: 0;
+  background: var(--card);
+  border: 1px solid rgba(36,50,49,.16);
+  border-radius: 10px;
+  padding: .85rem 1rem;
+  font: inherit;
+  font-size: .95rem;
+  color: var(--ink);
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.signup input[type="email"]::placeholder { color: rgba(36,50,49,.35); }
+.signup input[type="email"]:focus {
+  outline: none;
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(36,50,49,.08);
+}
+.submit {
+  border: none;
   background: var(--ink);
   color: #f4ede1;
-  border-radius: 12px;
-  padding: 1.05rem 1.25rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(.82rem, 2.3vw, 1rem);
-  text-align: left;
-  box-shadow: 0 18px 40px -24px rgba(36,50,49,.6);
-}
-.cmd code { flex: 1; white-space: nowrap; overflow-x: auto; }
-.cmd code .prompt { color: var(--mustard); margin-right: .6rem; user-select: none; }
-.cmd code .flag { color: #c9d3bf; }
-.copy {
-  border: 1px solid rgba(244,237,225,.22);
-  background: transparent;
-  color: #f4ede1;
-  border-radius: 8px;
-  padding: .5rem .85rem;
+  border-radius: 10px;
+  padding: .85rem 1.4rem;
   font: inherit;
-  font-size: .72rem;
-  letter-spacing: .12em;
-  text-transform: uppercase;
+  font-size: .95rem;
   cursor: pointer;
-  transition: background .15s ease;
-  white-space: nowrap;
+  transition: background .15s ease, transform .1s ease;
 }
-.copy:hover { background: rgba(244,237,225,.12); }
-.copy.copied { background: var(--mustard); border-color: var(--mustard); color: var(--ink); }
+.submit:hover { background: #2f4140; }
+.submit:active { transform: translateY(1px); }
+.submit:disabled { opacity: .6; cursor: default; }
+.signup-msg {
+  margin-top: .9rem;
+  font-size: .9rem;
+}
+.signup-msg.ok { color: var(--ink); }
+.signup-msg.err { color: #b4543f; }
 
 footer {
   font-size: .72rem;
