@@ -55,7 +55,7 @@
         const data = await res.json();
         if (!data.success) throw new Error(data.message || 'failed');
         form.hidden = true;
-        msg.textContent = "You're on the list. We'll be in touch.";
+        msg.textContent = "You're on the list! I'll be in touch, thanks for your interest!";
         msg.classList.add('ok');
         msg.hidden = false;
       } catch (err) {
