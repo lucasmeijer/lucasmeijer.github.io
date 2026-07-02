@@ -47,40 +47,18 @@ body {
 /* video */
 .video {
   width: min(720px, 92vw);
-  aspect-ratio: 16 / 9;
-  border-radius: 16px;
-  overflow: hidden;
-  background: linear-gradient(135deg, #efe7d8, #f4ede1);
+  aspect-ratio: 200 / 113;
   border: 1px solid rgba(36, 50, 49, 0.08);
+  border-radius: 16px;
   box-shadow: 0 24px 60px -28px rgba(36, 50, 49, 0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+  background: linear-gradient(135deg, #efe7d8, #f4ede1);
+  overflow: hidden;
 }
-
-.video .play {
-  width: 76px; height: 76px;
-  border-radius: 50%;
-  background: var(--ink);
-  display: flex; align-items: center; justify-content: center;
-  transition: transform .2s ease;
-}
-.video:hover .play { transform: scale(1.06); }
-.video .play::after {
-  content: "";
-  margin-left: 5px;
-  border-left: 20px solid var(--bg);
-  border-top: 13px solid transparent;
-  border-bottom: 13px solid transparent;
-}
-.video .label {
-  position: absolute;
-  bottom: 14px;
-  font-size: .72rem;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: rgba(36,50,49,.45);
+.video iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
 }
 
 /* waitlist */
