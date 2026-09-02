@@ -1,19 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap');
 
 :root {
+  /* Shared with the Atelier app design system. */
+  --font-sans: -apple-system, 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', ui-monospace, Menlo, monospace;
+  --text-body: 14px;
+  --text-title: 16px;
+  --leading-tight: 1.2;
+  --leading-standard: 1.5;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --radius-control: 6px;
+  --radius-surface: 10px;
+  --radius-round: 999px;
+
   --bg: #F9F3EC;
-  --ink: #243231;
-  --sage: #8E9B86;
-  --mustard: #D79E36;
-  --card: #fdf9f3;
+  --panel: #fdf9f3;
+  --line: rgba(36, 50, 49, .09);
+  --line-strong: rgba(36, 50, 49, .16);
+  --text: #66746f;
+  --text-bright: #243231;
+  --text-muted: #8E9B86;
+  --accent: #b77e18;
+  --accent-soft: color-mix(in srgb, var(--accent) 10%, var(--panel));
+  --success: #4f775c;
+  --button-border: color-mix(in srgb, var(--accent) 20%, var(--line));
+  --button-hover-border: color-mix(in srgb, var(--accent) 65%, var(--text-bright));
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
   background: var(--bg);
-  color: var(--ink);
-  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: var(--leading-standard);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -40,7 +63,7 @@ body {
   font-size: clamp(1.05rem, 2.6vw, 1.5rem);
   letter-spacing: 0.32em;
   text-transform: lowercase;
-  color: var(--sage);
+  color: var(--text-muted);
   margin-top: -1.25rem;
 }
 
@@ -48,9 +71,9 @@ body {
 .video {
   width: min(720px, 92vw);
   aspect-ratio: 200 / 113;
-  border: 1px solid rgba(36, 50, 49, 0.08);
-  border-radius: 16px;
-  box-shadow: 0 24px 60px -28px rgba(36, 50, 49, 0.35);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-surface);
+  box-shadow: 0 14px 44px rgba(36, 50, 49, .1);
   background: linear-gradient(135deg, #efe7d8, #f4ede1);
   overflow: hidden;
 }
@@ -61,58 +84,102 @@ body {
   display: block;
 }
 
-/* waitlist */
-.waitlist {
-  width: min(440px, 92vw);
+/* Installation panel — follows Atelier's shared type, surface, and control roles. */
+.install {
+  width: min(720px, 92vw);
+  margin-top: .25rem;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-surface);
+  background: var(--panel);
+  box-shadow: 0 14px 44px rgba(36, 50, 49, .1);
+  text-align: left;
 }
-.waitlist .hint {
-  font-size: .95rem;
-  letter-spacing: .02em;
-  color: var(--sage);
-  margin-bottom: 1rem;
+.steps { list-style: none; }
+.step {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 10px;
+  padding: 12px;
 }
-.signup {
+.step + .step { border-top: 1px solid var(--line); }
+.step-number {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-round);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: var(--weight-semibold);
+}
+.step-content { min-width: 0; }
+.step h2 {
+  margin: 1px 0 2px;
+  color: var(--text-bright);
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+.step p { color: var(--text); }
+.command {
   display: flex;
-  gap: .6rem;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 6px 6px 6px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control);
+  background: var(--bg);
+  color: var(--text-bright);
 }
-.signup input[type="email"] {
+.command code {
   flex: 1;
   min-width: 0;
-  background: var(--card);
-  border: 1px solid rgba(36,50,49,.16);
-  border-radius: 10px;
-  padding: .85rem 1rem;
-  font: inherit;
-  font-size: .95rem;
-  color: var(--ink);
-  transition: border-color .15s ease, box-shadow .15s ease;
+  overflow-x: auto;
+  font: 12px/var(--leading-standard) var(--font-mono);
+  white-space: nowrap;
 }
-.signup input[type="email"]::placeholder { color: rgba(36,50,49,.35); }
-.signup input[type="email"]:focus {
-  outline: none;
-  border-color: var(--ink);
-  box-shadow: 0 0 0 3px rgba(36,50,49,.08);
-}
-.submit {
-  border: none;
-  background: var(--ink);
-  color: #f4ede1;
-  border-radius: 10px;
-  padding: .85rem 1.4rem;
-  font: inherit;
-  font-size: .95rem;
+.copy {
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 12px;
+  border: 1px solid var(--button-border);
+  border-radius: var(--radius-round);
+  background: color-mix(in srgb, var(--panel) 72%, transparent);
+  color: var(--text);
+  font: 400 var(--text-body)/var(--leading-standard) var(--font-sans);
   cursor: pointer;
-  transition: background .15s ease, transform .1s ease;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease, transform 80ms ease;
 }
-.submit:hover { background: #2f4140; }
-.submit:active { transform: translateY(1px); }
-.submit:disabled { opacity: .6; cursor: default; }
-.signup-msg {
-  margin-top: .9rem;
-  font-size: .9rem;
+.copy:hover,
+.copy:focus-visible {
+  border-color: var(--button-hover-border);
+  outline: none;
+  background: var(--panel);
+  color: var(--text-bright);
 }
-.signup-msg.ok { color: var(--ink); }
-.signup-msg.err { color: #b4543f; }
+.copy:active { transform: translateY(1px); }
+.copy.copied { color: var(--success); }
+.copy svg {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (max-width: 700px) {
+  .command { align-items: stretch; flex-direction: column; }
+  .copy { height: 44px; align-self: flex-end; padding-inline: 16px; }
+  .copy svg { width: 20px; height: 20px; }
+}
 
 footer {
   font-size: .72rem;

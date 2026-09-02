@@ -38,49 +38,46 @@
       allowfullscreen></iframe>
   </div>
 
-  <!-- waitlist signup -->
-  <div class="waitlist">
-    <p class="hint">Sign up for the waitlist.</p>
-    <form id="waitlist-form" class="signup"
-          action="https://api.web3forms.com/submit" method="POST">
-      <input type="hidden" name="access_key" value="f2a351b6-14b2-4641-b5fd-ffd2afa015d2" />
-      <input type="hidden" name="subject" value="New atelier waitlist signup" />
-      <input type="checkbox" name="botcheck" class="hidden" style="display:none" />
-      <input type="email" name="email" id="email" required
-             placeholder="you@example.com" autocomplete="email" />
-      <button type="submit" class="submit">Join</button>
-    </form>
-    <p class="signup-msg" id="signup-msg" hidden></p>
-  </div>
-
+  <!-- installation -->
+  <section class="install" aria-label="Atelier installation instructions">
+    <ol class="steps">
+      <li class="step">
+        <span class="step-number" aria-hidden="true">1</span>
+        <div class="step-content">
+          <h2>Connect to your server</h2>
+          <p>SSH into a server that will only be used for Atelier.</p>
+        </div>
+      </li>
+      <li class="step">
+        <span class="step-number" aria-hidden="true">2</span>
+        <div class="step-content">
+          <h2>Run the installer</h2>
+          <div class="command">
+            <code id="install-command">curl -fsSL https://lucasmeijer.com/get-atelier | sudo bash</code>
+            <button class="copy" type="button" aria-label="Copy install command" data-copy-target="install-command">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+        </div>
+      </li>
+    </ol>
+  </section>
 
   <script>
-    const form = document.getElementById('waitlist-form');
-    const msg = document.getElementById('signup-msg');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = form.querySelector('.submit');
-      if (!form.email.value) return;
-      btn.disabled = true;
-      btn.textContent = '...';
+    const copyButton = document.querySelector('.copy');
+    copyButton.addEventListener('click', async () => {
+      const command = document.getElementById(copyButton.dataset.copyTarget).textContent;
       try {
-        const res = await fetch(form.action, {
-          method: 'POST',
-          body: new FormData(form),
-          headers: { 'Accept': 'application/json' },
-        });
-        const data = await res.json();
-        if (!data.success) throw new Error(data.message || 'failed');
-        form.hidden = true;
-        msg.textContent = "You're on the list! I'll be in touch, thanks for your interest!";
-        msg.classList.add('ok');
-        msg.hidden = false;
-      } catch (err) {
-        btn.disabled = false;
-        btn.textContent = 'Join';
-        msg.textContent = 'Something went wrong \u2014 please try again.';
-        msg.classList.add('err');
-        msg.hidden = false;
+        await navigator.clipboard.writeText(command);
+        copyButton.classList.add('copied');
+        copyButton.querySelector('span').textContent = 'Copied';
+        setTimeout(() => {
+          copyButton.classList.remove('copied');
+          copyButton.querySelector('span').textContent = 'Copy';
+        }, 1800);
+      } catch (_) {
+        window.getSelection().selectAllChildren(document.getElementById(copyButton.dataset.copyTarget));
       }
     });
   </script>
