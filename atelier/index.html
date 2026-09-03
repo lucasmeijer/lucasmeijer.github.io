@@ -45,16 +45,29 @@
         <span class="step-number" aria-hidden="true">1</span>
         <div class="step-content">
           <h2>Connect to your server</h2>
-          <p>SSH into a server that will only be used for Atelier.</p>
+          <p>SSH into a Linux server that will only be used for Atelier.</p>
         </div>
       </li>
       <li class="step">
         <span class="step-number" aria-hidden="true">2</span>
         <div class="step-content">
-          <h2>Run the installer</h2>
+          <h2>Install Tailscale</h2>
           <div class="command">
-            <code id="install-command">curl -fsSL https://lucasmeijer.com/get-atelier | sudo bash</code>
-            <button class="copy" type="button" aria-label="Copy install command" data-copy-target="install-command">
+            <code id="tailscale-command">curl -fsSL https://tailscale.com/install.sh | sh</code>
+            <button class="copy" type="button" aria-label="Copy Tailscale install command" data-copy-target="tailscale-command">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+        </div>
+      </li>
+      <li class="step">
+        <span class="step-number" aria-hidden="true">3</span>
+        <div class="step-content">
+          <h2>Install Atelier</h2>
+          <div class="command">
+            <code id="atelier-command">curl -fsSL https://lucasmeijer.com/get-atelier | sudo bash</code>
+            <button class="copy" type="button" aria-label="Copy Atelier install command" data-copy-target="atelier-command">
               <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg>
               <span>Copy</span>
             </button>
@@ -65,20 +78,21 @@
   </section>
 
   <script>
-    const copyButton = document.querySelector('.copy');
-    copyButton.addEventListener('click', async () => {
-      const command = document.getElementById(copyButton.dataset.copyTarget).textContent;
-      try {
-        await navigator.clipboard.writeText(command);
-        copyButton.classList.add('copied');
-        copyButton.querySelector('span').textContent = 'Copied';
-        setTimeout(() => {
-          copyButton.classList.remove('copied');
-          copyButton.querySelector('span').textContent = 'Copy';
-        }, 1800);
-      } catch (_) {
-        window.getSelection().selectAllChildren(document.getElementById(copyButton.dataset.copyTarget));
-      }
+    document.querySelectorAll('.copy').forEach((copyButton) => {
+      copyButton.addEventListener('click', async () => {
+        const source = document.getElementById(copyButton.dataset.copyTarget);
+        try {
+          await navigator.clipboard.writeText(source.textContent);
+          copyButton.classList.add('copied');
+          copyButton.querySelector('span').textContent = 'Copied';
+          setTimeout(() => {
+            copyButton.classList.remove('copied');
+            copyButton.querySelector('span').textContent = 'Copy';
+          }, 1800);
+        } catch (_) {
+          window.getSelection().selectAllChildren(source);
+        }
+      });
     });
   </script>
 </body>
