@@ -92,8 +92,16 @@
         <p>On your own Linux computer. Rent one from Hetzner, or use an old machine you have laying around.</p>
       </details>
       <details class="faq-item">
+        <summary>Why does Atelier use Tailscale?</summary>
+        <p>Atelier has access to your code and development tools, so it shouldn’t be open to the internet. Tailscale makes it easy to keep it accessible only to you.</p>
+      </details>
+      <details class="faq-item">
         <summary>If the agent cannot see secrets, how does it still work?</summary>
         <p>The agent’s Bash tool calls are executed in a Docker container whose outgoing network traffic is intercepted by Atelier. Inside the Docker container, there’s a placeholder secret. When the agent uses that, Atelier sees it in the network traffic and injects the real secret before the network request hits its destination.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How do I install project dependencies?</summary>
+        <p>You can give each project its own Dockerfile. Use it to install the versions of Node, Bun, Python, native libraries, or anything else your project needs.</p>
       </details>
       <details class="faq-item">
         <summary>Which models can I use?</summary>

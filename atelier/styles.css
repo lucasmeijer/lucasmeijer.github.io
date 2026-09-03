@@ -85,9 +85,11 @@ body {
 }
 
 /* Installation panel — follows Atelier's shared type, surface, and control roles. */
-.install,
-.faq {
+.install {
   width: min(720px, 92vw);
+}
+.faq {
+  width: min(504px, 64.4vw);
 }
 .install {
   margin-top: .25rem;
