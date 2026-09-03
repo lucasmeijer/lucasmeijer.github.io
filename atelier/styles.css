@@ -85,8 +85,11 @@ body {
 }
 
 /* Installation panel — follows Atelier's shared type, surface, and control roles. */
-.install {
+.install,
+.faq {
   width: min(720px, 92vw);
+}
+.install {
   margin-top: .25rem;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -175,10 +178,69 @@ body {
   stroke-linejoin: round;
 }
 
+/* Frequently asked questions */
+.faq {
+  width: 70%;
+  margin-top: .25rem;
+  text-align: left;
+}
+.faq-list {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-surface);
+  background: var(--panel);
+  box-shadow: 0 14px 44px rgba(36, 50, 49, .1);
+}
+.faq-item + .faq-item { border-top: 1px solid var(--line); }
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  color: var(--text-bright);
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+  list-style: none;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: '+';
+  margin-left: auto;
+  color: var(--accent);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1;
+}
+.faq-item[open] summary::after { content: '−'; }
+.faq-item summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
+.faq-item > p {
+  padding: 0 42px 14px 14px;
+  color: var(--text);
+  font-size: 12px;
+}
+.faq-answer {
+  padding: 0 42px 14px 14px;
+  color: var(--text);
+  font-size: 12px;
+}
+.faq-answer p { padding: 0; }
+.faq-answer ol {
+  margin: 4px 0 6px;
+  padding-left: 17px;
+}
+.faq-answer li + li { margin-top: 2px; }
+
 @media (max-width: 700px) {
   .command { align-items: stretch; flex-direction: column; }
   .copy { height: 44px; align-self: flex-end; padding-inline: 16px; }
   .copy svg { width: 20px; height: 20px; }
+  .faq-item summary { padding-block: 14px; }
+  .faq-item > p,
+  .faq-answer { padding-right: 18px; }
 }
 
 footer {

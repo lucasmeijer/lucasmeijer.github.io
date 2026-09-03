@@ -77,6 +77,36 @@
     </ol>
   </section>
 
+  <!-- frequently asked questions -->
+  <section class="faq" aria-label="Frequently asked questions">
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is Atelier a good option for me?</summary>
+        <div class="faq-answer">
+          <p>I think Atelier is a good fit when you:</p>
+          <ol>
+            <li>want a free, open-source tool that doesn’t lock you into any model provider;</li>
+            <li>aren’t comfortable running coding agents on your laptop; and</li>
+            <li>like the workflow I’ve optimized it for.</li>
+          </ol>
+          <p>Watch the video above and try it out.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Where do the cloud agents run?</summary>
+        <p>On your own Linux computer. Rent one from Hetzner, or use an old machine you have laying around.</p>
+      </details>
+      <details class="faq-item">
+        <summary>If the agent cannot see secrets, how does it still work?</summary>
+        <p>The agent’s Bash tool calls are executed in a Docker container whose outgoing network traffic is intercepted by Atelier. Inside the Docker container, there’s a placeholder secret. When the agent uses that, Atelier sees it in the network traffic and injects the real secret before the network request hits its destination.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Which models can I use?</summary>
+        <p>All of them. You can use your OpenAI subscription, Anthropic API key, OpenRouter, etc.</p>
+      </details>
+    </div>
+  </section>
+
   <script>
     document.querySelectorAll('.copy').forEach((copyButton) => {
       copyButton.addEventListener('click', async () => {
