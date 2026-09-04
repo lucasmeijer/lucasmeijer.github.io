@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap');
 
 :root {
   /* Shared with the Atelier app design system. */
@@ -69,29 +69,75 @@ body {
 
 .value-proposition {
   width: min(720px, 92vw);
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  color: var(--text);
-  font-size: 13px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px 34px;
+  color: var(--text-bright);
+  font-family: var(--font-sans);
+  font-size: 14px;
   font-weight: var(--weight-medium);
-  line-height: 1;
+  line-height: 1.4;
+  list-style: none;
+  text-align: left;
 }
-.value-proposition span {
+.value-proposition li {
+  display: flex;
+  gap: 9px;
+  align-items: baseline;
+}
+.value-proposition li::before {
+  content: '•';
+  flex: 0 0 auto;
+  color: var(--accent);
+  font-size: 18px;
+  line-height: 0;
+  transform: translateY(1px);
+}
+.value-proposition a {
+  color: var(--text-bright);
+  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  text-underline-offset: 3px;
+  transition: color 120ms ease, text-decoration-color 120ms ease;
+}
+.value-proposition a:hover,
+.value-proposition a:focus-visible {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+.value-proposition .github-link {
   display: inline-flex;
-  align-items: center;
-  min-height: 30px;
-  padding: 6px 12px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-round);
-  background: color-mix(in srgb, var(--panel) 72%, transparent);
-  box-shadow: 0 3px 12px rgba(36, 50, 49, .04);
+  color: var(--text-bright);
+  vertical-align: -3px;
+}
+.github-link svg {
+  width: 17px;
+  height: 17px;
+  fill: currentColor;
 }
 
-/* video */
+/* videos */
+.video-list {
+  width: min(960px, 92vw);
+  display: grid;
+  gap: 2rem;
+}
+.video-row {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  align-items: center;
+  gap: 28px;
+}
+.video-row h2 {
+  color: var(--text-bright);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(24px, 2.5vw, 30px);
+  font-weight: 600;
+  line-height: 1.05;
+  text-align: right;
+  text-wrap: balance;
+}
 .video {
-  width: min(720px, 92vw);
+  width: 100%;
   aspect-ratio: 200 / 113;
   border: 1px solid var(--line);
   border-radius: var(--radius-surface);
@@ -104,6 +150,21 @@ body {
   height: 100%;
   border: 0;
   display: block;
+}
+.video-phone {
+  width: min(100%, 320px);
+  aspect-ratio: 1014 / 1920;
+  justify-self: center;
+}
+.video-placeholder {
+  display: grid;
+  place-items: center;
+  border-style: dashed;
+  box-shadow: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
 }
 
 /* Installation panel — follows Atelier's shared type, surface, and control roles. */
@@ -256,6 +317,16 @@ body {
 .faq-answer li + li { margin-top: 2px; }
 
 @media (max-width: 700px) {
+  .value-proposition { gap: 8px; }
+  .video-list { gap: 1.75rem; }
+  .video-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .video-row h2 {
+    font-size: 25px;
+    text-align: left;
+  }
   .command { align-items: stretch; flex-direction: column; }
   .copy { height: 44px; align-self: flex-end; padding-inline: 16px; }
   .copy svg { width: 20px; height: 20px; }
