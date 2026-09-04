@@ -67,6 +67,28 @@ body {
   margin-top: -1.25rem;
 }
 
+.value-proposition {
+  width: min(720px, 92vw);
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: var(--weight-medium);
+  line-height: 1;
+}
+.value-proposition span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-round);
+  background: color-mix(in srgb, var(--panel) 72%, transparent);
+  box-shadow: 0 3px 12px rgba(36, 50, 49, .04);
+}
+
 /* video */
 .video {
   width: min(720px, 92vw);
