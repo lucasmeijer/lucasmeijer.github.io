@@ -68,15 +68,17 @@ body {
 }
 
 .value-proposition {
-  width: min(720px, 92vw);
+  width: min(960px, 92vw);
+  padding-left: 228px;
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px 34px;
   color: var(--text-bright);
-  font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: var(--weight-medium);
-  line-height: 1.4;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -.01em;
   list-style: none;
   text-align: left;
 }
@@ -86,12 +88,13 @@ body {
   align-items: baseline;
 }
 .value-proposition li::before {
-  content: '•';
+  content: '';
+  width: 5px;
+  height: 5px;
   flex: 0 0 auto;
-  color: var(--accent);
-  font-size: 18px;
-  line-height: 0;
-  transform: translateY(1px);
+  margin-top: .58em;
+  border-radius: 50%;
+  background: var(--accent);
 }
 .value-proposition a {
   color: var(--text-bright);
@@ -317,7 +320,10 @@ body {
 .faq-answer li + li { margin-top: 2px; }
 
 @media (max-width: 700px) {
-  .value-proposition { gap: 8px; }
+  .value-proposition {
+    padding-left: 0;
+    gap: 8px;
+  }
   .video-list { gap: 1.75rem; }
   .video-row {
     grid-template-columns: 1fr;
