@@ -88,9 +88,6 @@ body {
 .install {
   width: min(720px, 92vw);
 }
-.faq {
-  width: min(504px, 64.4vw);
-}
 .install {
   margin-top: .25rem;
   overflow: hidden;
@@ -182,7 +179,7 @@ body {
 
 /* Frequently asked questions */
 .faq {
-  width: 70%;
+  width: min(504px, 64.4vw);
   margin-top: .25rem;
   text-align: left;
 }
