@@ -154,22 +154,12 @@ body {
   border: 0;
   display: block;
 }
-.video-phone {
+.video-portrait {
   width: min(100%, 320px);
-  aspect-ratio: 1014 / 1920;
   justify-self: center;
 }
-.video-placeholder {
-  display: grid;
-  place-items: center;
-  border-style: dashed;
-  box-shadow: none;
-  color: var(--text-muted);
-  font-size: 12px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
+.video-elevator { aspect-ratio: 1080 / 1920; }
+.video-phone { aspect-ratio: 1014 / 1920; }
 /* Installation panel — follows Atelier's shared type, surface, and control roles. */
 .install {
   width: min(720px, 92vw);
