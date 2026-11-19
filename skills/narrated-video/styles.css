@@ -1,0 +1,20 @@
+:root { color-scheme: dark; --page: #161616; --ink: #f4f3ed; --muted: #b0b0a8; --accent: #f3ee62; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 400 1.375rem/1.6 Arial, Helvetica, sans-serif; -webkit-font-smoothing: antialiased; }
+main { width: min(100%, 860px); padding: 0 28px; margin: auto; }
+a { color: inherit; text-underline-offset: .25em; }
+a:hover { color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 7px; }
+header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 30px 0 62px; }
+header > a:last-child { font-size: 1rem; color: var(--muted); white-space: nowrap; }
+.wordmark { font: 400 clamp(16px, 4vw, 30px)/1 ui-monospace, Menlo, Consolas, monospace; text-decoration: none; letter-spacing: -.075em; }
+.wordmark span { color: var(--accent); }
+h1 { margin: 0 0 36px; font-size: clamp(32px, 5vw, 46px); font-weight: 400; line-height: 1.15; letter-spacing: -.04em; text-wrap: balance; }
+p { margin: 0 0 28px; }
+video { display: block; width: 100%; height: auto; margin: 36px 0 42px; border-radius: 5px; background: #000; }
+ul { padding-left: 1.1em; margin: 0 0 36px; }
+li { padding-left: .2em; margin-bottom: 16px; }
+code { font-family: ui-monospace, Menlo, Consolas, monospace; }
+footer { padding: 30px 0 50px; border-top: 1px solid #383833; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; font-size: 1rem; color: var(--muted); }
+pre { flex-basis: 100%; margin: 0 0 8px; padding: 20px; background: #232320; color: var(--ink); white-space: pre-wrap; overflow-wrap: anywhere; font-size: .9375rem; }
+@media (max-width: 560px) { body { font-size: 1.1875rem; } main { padding-inline: 22px; } header { padding-bottom: 42px; } video { margin-inline: -8px; width: calc(100% + 16px); } }
