@@ -15,8 +15,8 @@ p { margin: 0 0 28px; }
 code { font-family: ui-monospace, Menlo, Consolas, monospace; }
 p code { color: var(--accent); }
 .exhausting-aside { white-space: nowrap; }
-.exhausted-emoji { display: inline-block; position: relative; width: 1.6em; height: 1.6em; vertical-align: -.35em; border-radius: 50%; overflow: hidden; }
-.exhausted-emoji img { position: absolute; width: 500%; height: auto; max-width: none; left: -228%; top: -48%; }
+.exhausted-emoji { display: inline-block; position: relative; width: 1.2em; height: 2.4em; vertical-align: -.7em; overflow: hidden; }
+.exhausted-emoji img { position: absolute; width: 1.6em; height: 2.4em; max-width: none; left: -.4em; top: 0; clip-path: polygon(49% 5%, 58% 5%, 63% 9%, 64% 17%, 73% 21%, 79% 30%, 79% 39%, 83% 51%, 79% 57%, 75% 59%, 80% 81%, 82% 91%, 78% 95%, 64% 95%, 59% 92%, 56% 83%, 58% 92%, 52% 96%, 47% 96%, 46% 91%, 43% 69%, 40% 60%, 44% 60%, 42% 54%, 37% 51%, 34% 42%, 35% 30%, 40% 23%, 49% 18%, 46% 11%); }
 figure { margin: 36px 0 42px; }
 figcaption { margin-bottom: 12px; color: var(--muted); font-size: 1rem; }
 figure img { display: block; width: 100%; height: auto; border-radius: 5px; }
