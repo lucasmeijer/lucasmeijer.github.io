@@ -15,6 +15,7 @@ p { margin: 0 0 28px; }
 code { font-family: ui-monospace, Menlo, Consolas, monospace; }
 p code { color: var(--accent); }
 figure { margin: 36px 0 42px; }
+figcaption { margin-bottom: 12px; color: var(--muted); font-size: 1rem; }
 figure img { display: block; width: 100%; height: auto; border-radius: 5px; }
 blockquote { border-left: 3px solid var(--accent); padding-left: 26px; margin: 30px 0 60px; }
 footer { padding: 30px 0 50px; border-top: 1px solid #383833; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; font-size: 1rem; color: var(--muted); }
