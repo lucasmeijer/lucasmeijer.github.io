@@ -26,55 +26,25 @@
 </head>
 <body>
   <main>
-    <header class="site-header"><a href="/">Lucas Meijer</a><a href="https://github.com/lucasmeijer/lucas-skills/tree/main/skills/lplan">View the skill on GitHub</a></header>
-    <section class="hero" aria-labelledby="title">
-      <p class="eyebrow">A skill for your coding agent</p>
-      <h1 id="title"><span>/</span>lplan</h1>
-      <h2>Less reading.<br>Better decisions.</h2>
-      <p class="intro">Align on what to build before the agent starts coding. Get a recommendation, with the reasoning there when you need it.</p>
-      <a class="install-link" href="#install">Install lplan</a>
-    </section>
-
-    <section class="example" aria-labelledby="example-title">
-      <div class="section-heading"><p class="eyebrow">The idea</p><h2 id="example-title">Recommendations first.<br>Background in a foldout.</h2></div>
-      <div class="proposal">
-        <p class="proposal-text"><span class="proposal-number">1.</span> Publish the slides from their existing repository.</p>
-        <details>
-          <summary>Background · Why not copy them into the website?</summary>
-          <div class="background"><p>The deck already works. GitHub Pages can publish it directly, and future pushes update the site automatically.</p><p class="alternative-label">Alternatives</p><p><strong>A.</strong> Copy the slides into the personal website repository.</p><p><strong>B.</strong> Use a separate hosting provider.</p></div>
-        </details>
-      </div>
-      <p class="caption">An example proposal. Open the background if you want the rationale and alternatives.</p>
-      <p class="body-copy">Reading questions and four options, only to pick the recommendation again, gets tiring. lplan puts the recommended answer first. You decide how much background to read.</p>
-    </section>
-
-    <section class="replies" aria-labelledby="replies-title">
-      <p class="eyebrow">Keep the conversation short</p>
-      <h2 id="replies-title">You can just say <code>3b</code>.</h2>
-      <p class="body-copy">That means: accept proposals 1 and 2, choose alternative B for proposal 3, and assume you haven’t read 4, 5, or 6 yet.</p>
-      <div class="reply-list">
-        <div><code>accept</code><p>Accept all proposals.</p></div>
-        <div><code>accept, but I don’t know about 4</code><p>Accept 1–3. Keep discussing 4.</p></div>
-        <div><code>implement</code><p>Accept the plan and start building.</p></div>
-      </div>
-    </section>
-
-    <section class="in-use" aria-labelledby="in-use-title">
-      <p class="eyebrow">In a real conversation</p>
-      <h2 id="in-use-title">The detail stays out of the way.</h2>
-      <figure><a href="lplan-in-codex.png"><img src="lplan-in-codex.png" width="1722" height="364" loading="lazy" alt="A real lplan proposal in Codex about teaching physics simulation, with a yellow annotation highlighting the collapsed Background foldout."></a><figcaption>A real lplan proposal in Codex. The background starts collapsed.</figcaption></figure>
-    </section>
-
-    <section class="install" id="install" aria-labelledby="install-title">
-      <p class="eyebrow">Try it</p>
-      <h2 id="install-title">Install once. Then ask for an lplan.</h2>
-      <p class="body-copy">Run this in your terminal and choose the agent you use.</p>
+    <header><a class="wordmark" href="#"><span>/</span>lplan</a><a href="https://github.com/lucasmeijer/lucas-skills/tree/main/skills/lplan">Get the skill</a></header>
+    <article>
+      <h1>Reading walls of text is exhausting.</h1>
+      <img class="cigarette" src="ben-affleck-smoking.jpg" width="710" height="1065" alt="Ben Affleck looking exhausted while smoking a cigarette.">
+      <p><code>/lplan</code> is a cognitively ergonomic alternative to grilling or interviewing to align with an agent on what it should do.</p>
+      <p>Instead of getting a question with four options and one recommendation, you get just the recommendation, phrased as a statement.</p>
+      <figure><a href="lplan-closed.jpg"><img src="lplan-closed.jpg" width="900" height="267" alt="Four numbered lplan recommendations in AgentsInTheCloud, with all four background foldouts closed." loading="lazy"></a></figure>
+      <p>As long as you agree with the recommendation, you don’t need to read the rationale and all the alternatives. Just continue to the next recommendation.</p>
+      <p>When you see a recommendation you don’t like, only then do you open the foldout:</p>
+      <figure><a href="lplan-third-open.jpg"><img src="lplan-third-open.jpg" width="900" height="355" alt="The same lplan, with the third foldout open to show its rationale and alternatives A and B." loading="lazy"></a></figure>
+      <p>And you can read the rationale and the alternatives.</p>
+      <p>Because responding to walls of text is also exhausting, you can respond by just saying <code>3b</code>. That will be interpreted as:</p>
+      <blockquote>“I accept 1 and 2. I reject 3, and instead want to do 3b. And I haven’t even read 4, 5, or 6.”</blockquote>
+    </article>
+    <footer>
       <pre><code>npx skills add lucasmeijer/lucas-skills --skill lplan</code></pre>
-      <p class="body-copy">Then type <code>/lplan</code> with what you want to build. The agent researches your codebase and proposes the decisions to make, starting with the ones that could change the rest of the plan.</p>
-      <p class="compatibility">Inline foldouts depend on your agent’s rendering support. The skill includes a separate HTML view for agents that can’t display them inline.</p>
-      <a class="source-link" href="https://github.com/lucasmeijer/lucas-skills/tree/main/skills/lplan">Read the skill and make it your own</a>
-    </section>
-    <footer><a href="https://x.com/lucasmeijer">@lucasmeijer</a><a href="/aie-sf-2026/">Watch the ideas unfold in the talk’s slides</a></footer>
+      <a href="https://github.com/lucasmeijer/lucas-skills/tree/main/skills/lplan">View the skill on GitHub</a>
+      <a href="https://x.com/lucasmeijer">By Lucas Meijer</a>
+    </footer>
   </main>
 </body>
 </html>
